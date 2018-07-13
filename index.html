@@ -8,14 +8,14 @@
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
 <body>
-<div class="">
+<div class="container">
     <div class="">
         <!-- only show this element when the isnt on mobile -->
-        <h1>Student Grade Table
+        <h1 class ="hidden-xs">Student Grade Table
             <small>Grade Average : <span class="avgGrade"></span></small>
         </h1>
         <!-- only show this element when the user gets to a mobile version -->
-        <h3>Student Grade Table
+        <h3 class = "visible-xs" >Student Grade Table
             <small>Grade Average : <span class="avgGrade"></span></small>
         </h3>
     </div>
@@ -41,8 +41,8 @@
             <input type="text" class="" name="studentGrade" id="studentGrade"
                    placeholder="Student Grade">
         </div>
-        <button type="button" class="" onclick="">Add</button>
-        <button type="button" class="" onclick="">Cancel</button>
+        <button type="button" class="btn-success" onclick="">Add</button>
+        <button type="button" class="btn-default" onclick="">Cancel</button>
     </div>
     <div class="student-list-container">
         <table class="student-list">
