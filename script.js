@@ -10,6 +10,9 @@ $(document).ready(initializeApp);
 /**
  * Define all global variables here.  
  */
+
+var student_array = [];
+
 /***********************
  * student_array - global array to hold student objects
  * @type {Array}
@@ -49,7 +52,7 @@ function addClickHandlersToElements(){
  * @return: 
        none
  */
-function handleAddClicked(){
+function handleAddClicked( event ){
       addStudent();
       renderStudentOnDom();
       clearAddStudentFormInputs();
@@ -70,6 +73,11 @@ function handleCancelClick(){
  * @calls clearAddStudentFormInputs, updateStudentList
  */
 function addStudent(){
+      var student_obj = {
+            
+      };
+
+
      clearAddStudentFormInputs();
      updateStudentList();
 }
@@ -83,7 +91,7 @@ function clearAddStudentFormInputs(){
  * into the .student_list tbody
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
-function renderStudentOnDom(studentObj){
+function renderStudentOnDom(student_obj){
 }
 
 /***************************************************************************************************
