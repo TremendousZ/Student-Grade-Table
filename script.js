@@ -43,8 +43,41 @@ function initializeApp(){
 function addClickHandlersToElements(){
       $(".add").on("click", handleAddClicked);
       $(".cancel").on("click", handleCancelClick);
-      $(".getData").on("click", );
+      $(".getData").on("click", getStudentData); 
 }
+
+
+function getStudentData(){
+      var studentData = {
+            datatype:"json",
+            url: "https://s-apis.learningfuze.com/sgt/get",
+            method:'post',
+            api_key: 'gmXk1sAmOs',
+            success: fillStudentTable,
+            
+      }
+      $.ajax(studentData);
+}
+
+ function fillStudentTable( response ){
+       debugger;
+      var lfzStudentData = [];
+      var studentDataArray = response.data;
+      for (var index = 0; index < studentDataArray.length; index++) {
+            var student = studentDataArray[index]
+            var studentObject = {
+                  name: student.name,
+                  course: student.course,
+                  grade: student.grade,
+            }
+            lfzStudentData.push(studentObject);
+      
+      }
+
+      updateStudentList( lfzStudentData );
+ }
+
+
 
 /***************************************************************************************************
  * handleAddClicked - Event Handler when user clicks the add button
@@ -75,7 +108,7 @@ function handleCancelClick(){
  */
 function addStudent(){
       var student_obj = {
-            studentName: $("#studentName").val(),
+            name: $("#studentName").val(),
             course: $("#course").val(),
             grade: $('#studentGrade').val()    
       };
@@ -100,7 +133,7 @@ function clearAddStudentFormInputs(){
  */
 function renderStudentOnDom(student_obj){
       var studentRow = $('<tr>');
-      var studentNameDiv = $('<td>').text(student_obj.studentName);
+      var studentNameDiv = $('<td>').text(student_obj.name);
       var studentCourseDiv = $('<td>').text(student_obj.course)
       var studentGradeDiv = $('<td>').text(student_obj.grade);
       var operationTd = $('<td>');
