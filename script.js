@@ -32,6 +32,7 @@ var student_array = [];
 function initializeApp(){
       addClickHandlersToElements();
       clearAddStudentFormInputs();
+      getStudentData();
 }
 
 /***************************************************************************************************
@@ -110,7 +111,7 @@ function addStudent(){
       var student_obj = {
             name: $("#studentName").val(),
             course: $("#course").val(),
-            grade: $('#studentGrade').val()    
+            grade: $('#studentGrade').val(),    
       };
       student_array.push(student_obj);
       console.log(student_obj);
@@ -124,7 +125,6 @@ function clearAddStudentFormInputs(){
       $("#studentName").val("");
       $("#course").val("");
       $("#studentGrade").val("");
-
 }
 /***************************************************************************************************
  * renderStudentOnDom - take in a student object, create html elements from the values and then append the elements
@@ -160,7 +160,6 @@ function updateStudentList(array){
       renderStudentOnDom(array[index]);
       renderGradeAverage(calculateGradeAverage(array));
       }
-
 }
 /***************************************************************************************************
  * calculateGradeAverage - loop through the global student array and calculate average grade and return that value
