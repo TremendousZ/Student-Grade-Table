@@ -49,10 +49,10 @@ function addClickHandlersToElements(){
 
 function getStudentData(){
       var studentData = {
-            datatype:"json",
-            url: "https://s-apis.learningfuze.com/sgt/get",
-            method:'post',
-            api_key: 'gmXk1sAmOs',
+            dataType:"json",
+            url: "http://s-apis.learningfuze.com/sgt/get",
+            method:'POST',
+            data: {api_key:'gmXk1sAmOs'},
             success: fillStudentTable,
             
       }
@@ -61,20 +61,20 @@ function getStudentData(){
 
  function fillStudentTable( response ){
        debugger;
-      var lfzStudentData = [];
-      var studentDataArray = response.data;
-      for (var index = 0; index < studentDataArray.length; index++) {
-            var student = studentDataArray[index]
-            var studentObject = {
-                  name: student.name,
-                  course: student.course,
-                  grade: student.grade,
-            }
-            lfzStudentData.push(studentObject);
+      // var lfzStudentData = [];
+      student_array = response.data;
+      // for (var index = 0; index < student_array.length; index++) {
+      //       var student = student_array[index]
+      //       var studentObject = {
+      //             name: student.name,
+      //             course: student.course,
+      //             grade: student.grade,
+      //       }
+      //       lfzStudentData.push(studentObject);
       
-      }
+      // }
 
-      updateStudentList( lfzStudentData );
+      updateStudentList( student_array );
  }
 
 
@@ -139,7 +139,8 @@ function renderStudentOnDom(student_obj){
       var operationTd = $('<td>');
       var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
       deleteButton.on('click', function() {
-            student_array.splice(student_obj, 1);
+            var deleteIndex = student_array.indexOf(student_obj);
+            student_array.splice(deleteIndex,1);
             $('tbody').empty();
             updateStudentList(student_array);
       })
