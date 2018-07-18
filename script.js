@@ -43,9 +43,9 @@ function initializeApp(){
 function addClickHandlersToElements(){
       $(".add").on("click", handleAddClicked);
       $(".cancel").on("click", handleCancelClick);
-      $('tbody').on('click', '.delete', function(){
-            removeStudent
-      })
+      // $('tbody').on('click', '.delete', function(){
+      //       removeStudent();
+      // })
 }
 
 /***************************************************************************************************
@@ -106,7 +106,13 @@ function renderStudentOnDom(student_obj){
       var studentCourseDiv = $('<td>').text(student_obj.course)
       var studentGradeDiv = $('<td>').text(student_obj.grade);
       var operationTd = $('<td>');
-      var deleteButton = $('<button>').addClass("btn btn-danger delete").text("Delete");
+      var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
+      deleteButton.on('click', function() {
+            // removeStudent()
+            student_array.splice(student_obj, 1);
+            $('tbody').empty();
+            updateStudentList(student_array);
+      })
       operationTd.append(deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
       $("#tableDataGoesHere").append( studentRow);
@@ -122,7 +128,6 @@ function updateStudentList(array){
       debugger;
       for (var index = 0; index < array.length; index++) {
       renderStudentOnDom(array[index]);
-      
       renderGradeAverage(calculateGradeAverage(array));
       }
 
@@ -138,8 +143,7 @@ function calculateGradeAverage( array ){
       for(var index = 0; index < array.length; index++) {
             var numberValue = parseInt(array[index].grade);
             gradeTotal += numberValue;
-            var gradeAverage = Math.round(gradeTotal / array.length);
-           
+            var gradeAverage = Math.round(gradeTotal / array.length);  
       }
       return gradeAverage;
 }
@@ -154,8 +158,6 @@ function calculateGradeAverage( array ){
 function renderGradeAverage( number ){
       $('.avgGrade').text( number );
 }
-
-
 
 
 
