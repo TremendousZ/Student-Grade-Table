@@ -43,6 +43,9 @@ function initializeApp(){
 function addClickHandlersToElements(){
       $(".add").on("click", handleAddClicked);
       $(".cancel").on("click", handleCancelClick);
+      $('tbody').on('click', '.delete', function(){
+            removeStudent
+      })
 }
 
 /***************************************************************************************************
@@ -103,7 +106,7 @@ function renderStudentOnDom(student_obj){
       var studentCourseDiv = $('<td>').text(student_obj.course)
       var studentGradeDiv = $('<td>').text(student_obj.grade);
       var operationTd = $('<td>');
-      var deleteButton = $('<button>').addClass("btn btn-danger").text("Delete");
+      var deleteButton = $('<button>').addClass("btn btn-danger delete").text("Delete");
       operationTd.append(deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
       $("#tableDataGoesHere").append( studentRow);
@@ -119,6 +122,7 @@ function updateStudentList(array){
       debugger;
       for (var index = 0; index < array.length; index++) {
       renderStudentOnDom(array[index]);
+      
       renderGradeAverage(calculateGradeAverage(array));
       }
 
