@@ -87,8 +87,9 @@ function getStudentData(){
        none
  */
 function handleAddClicked( event ){
-      $('tbody').empty()
-      addStudent();
+      // $('tbody').empty();
+      addStudentToServer();
+      // addStudent();
       // renderStudentOnDom(student_obj);
       clearAddStudentFormInputs();
 }
@@ -113,10 +114,31 @@ function addStudent(){
             course: $("#course").val(),
             grade: $('#studentGrade').val(),    
       };
+      
       student_array.push(student_obj);
       console.log(student_obj);
       clearAddStudentFormInputs();
       updateStudentList(student_array);
+}
+
+function addStudentToServer(){
+      debugger;
+      var studentToAdd = {
+            dataType: 'json',
+            url: "http://s-apis.learningfuze.com/sgt/create",
+            method:"POST",
+            data: { api_key : 'gmXk1sAmOs',
+            name:$("#studentName").val() ,
+            course:$("#course").val(),
+            grade: $('#studentGrade').val(),
+            } ,
+            success: function( boolean, newID) {
+                  console.log(newID);
+                  
+            }
+
+      } 
+      $.ajax(studentToAdd);
 }
 /***************************************************************************************************
  * clearAddStudentForm - clears out the form values based on inputIds variable
@@ -167,7 +189,6 @@ function updateStudentList(array){
  * @returns {number}
  */
 function calculateGradeAverage( array ){
-      debugger;
       var gradeTotal = 0;
       for(var index = 0; index < array.length; index++) {
             var numberValue = parseInt(array[index].grade);
