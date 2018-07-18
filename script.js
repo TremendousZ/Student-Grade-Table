@@ -91,7 +91,7 @@ function handleAddClicked( event ){
       addStudentToServer();
       // addStudent();
       // renderStudentOnDom(student_obj);
-      clearAddStudentFormInputs();
+      // clearAddStudentFormInputs();
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
@@ -122,7 +122,7 @@ function addStudent(){
 }
 
 function addStudentToServer(){
-      debugger;
+    
       var studentToAdd = {
             dataType: 'json',
             url: "http://s-apis.learningfuze.com/sgt/create",
@@ -132,11 +132,27 @@ function addStudentToServer(){
             course:$("#course").val(),
             grade: $('#studentGrade').val(),
             } ,
-            success: function( boolean, newID) {
-                  console.log(newID);
+            success: function( responseObject) {
+                
+                  if( responseObject.success ) {
+                        var student_obj = {
+                              name: $('#studentName').val(),
+                              course:$("#course").val(),
+                              grade: $('#studentGrade').val(),
+                              id: responseObject.new_id
+                        }
+                        student_array.push(student_obj);
+                        updateStudentList(student_array);
+                        clearAddStudentFormInputs();
+                  } else {
+                        debugger;
+                  }
                   
-            }
+            },
+            failure: function(param, param2, param3){
+                  debugger;
 
+            }
       } 
       $.ajax(studentToAdd);
 }
