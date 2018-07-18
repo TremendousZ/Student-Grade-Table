@@ -43,9 +43,7 @@ function initializeApp(){
 function addClickHandlersToElements(){
       $(".add").on("click", handleAddClicked);
       $(".cancel").on("click", handleCancelClick);
-      // $('tbody').on('click', '.delete', function(){
-      //       removeStudent();
-      // })
+      $(".getData").on("click", );
 }
 
 /***************************************************************************************************
@@ -108,7 +106,6 @@ function renderStudentOnDom(student_obj){
       var operationTd = $('<td>');
       var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
       deleteButton.on('click', function() {
-            // removeStudent()
             student_array.splice(student_obj, 1);
             $('tbody').empty();
             updateStudentList(student_array);
@@ -125,7 +122,6 @@ function renderStudentOnDom(student_obj){
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
 function updateStudentList(array){
-      debugger;
       for (var index = 0; index < array.length; index++) {
       renderStudentOnDom(array[index]);
       renderGradeAverage(calculateGradeAverage(array));
