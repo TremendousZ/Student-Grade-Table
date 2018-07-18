@@ -32,7 +32,6 @@ var student_array = [];
 function initializeApp(){
       addClickHandlersToElements();
       clearAddStudentFormInputs();
-      renderStudentOnDom(studentObj);
 }
 
 /***************************************************************************************************
@@ -53,8 +52,9 @@ function addClickHandlersToElements(){
        none
  */
 function handleAddClicked( event ){
+      $('tbody').empty()
       addStudent();
-      renderStudentOnDom();
+      // renderStudentOnDom(student_obj);
       clearAddStudentFormInputs();
 }
 /***************************************************************************************************
@@ -74,17 +74,23 @@ function handleCancelClick(){
  */
 function addStudent(){
       var student_obj = {
-            
+            studentName: $("#studentName").val(),
+            course: $("#course").val(),
+            grade: $('#studentGrade').val()    
       };
-
-
-     clearAddStudentFormInputs();
-     updateStudentList();
+      student_array.push(student_obj);
+      console.log(student_obj);
+      clearAddStudentFormInputs();
+      updateStudentList(student_array);
 }
 /***************************************************************************************************
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
 function clearAddStudentFormInputs(){
+      $("#studentName").val("");
+      $("#course").val("");
+      $("#studentGrade").val("");
+
 }
 /***************************************************************************************************
  * renderStudentOnDom - take in a student object, create html elements from the values and then append the elements
@@ -92,6 +98,15 @@ function clearAddStudentFormInputs(){
  * @param {object} studentObj a single student object with course, name, and grade inside
  */
 function renderStudentOnDom(student_obj){
+      var studentRow = $('<tr>');
+      var studentNameDiv = $('<td>').text(student_obj.studentName);
+      var studentCourseDiv = $('<td>').text(student_obj.course)
+      var studentGradeDiv = $('<td>').text(student_obj.grade);
+      var operationTd = $('<td>');
+      var deleteButton = $('<button>').addClass("btn btn-danger").text("Delete");
+      operationTd.append(deleteButton);
+      studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
+      $("#tableDataGoesHere").append( studentRow);
 }
 
 /***************************************************************************************************
@@ -101,27 +116,39 @@ function renderStudentOnDom(student_obj){
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
 function updateStudentList(array){
-      renderStudentOnDom(studentObj);
-      calculateGradeAverage(student_array);
-      renderGradeAverage(student_array);
+      debugger;
+      for (var index = 0; index < array.length; index++) {
+      renderStudentOnDom(array[index]);
+      renderGradeAverage(calculateGradeAverage(array));
+      }
 
-  
 }
 /***************************************************************************************************
  * calculateGradeAverage - loop through the global student array and calculate average grade and return that value
  * @param: {array} students  the array of student objects
  * @returns {number}
  */
-function calculateGradeAverage(){
-
-
+function calculateGradeAverage( array ){
+      debugger;
+      var gradeTotal = 0;
+      for(var index = 0; index < array.length; index++) {
+            var numberValue = parseInt(array[index].grade);
+            gradeTotal += numberValue;
+            var gradeAverage = Math.round(gradeTotal / array.length);
+           
+      }
+      return gradeAverage;
 }
+
+
+
 /***************************************************************************************************
  * renderGradeAverage - updates the on-page grade average
  * @param: {number} average    the grade average
  * @returns {undefined} none
  */
-function renderGradeAverage(){
+function renderGradeAverage( number ){
+      $('.avgGrade').text( number );
 }
 
 
