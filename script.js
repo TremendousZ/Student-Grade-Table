@@ -108,18 +108,18 @@ function handleCancelClick(){
  * @return undefined
  * @calls clearAddStudentFormInputs, updateStudentList
  */
-function addStudent(){
-      var student_obj = {
-            name: $("#studentName").val(),
-            course: $("#course").val(),
-            grade: $('#studentGrade').val(),    
-      };
+// function addStudent(){
+//       var student_obj = {
+//             name: $("#studentName").val(),
+//             course: $("#course").val(),
+//             grade: $('#studentGrade').val(),    
+//       };
       
-      student_array.push(student_obj);
-      console.log(student_obj);
-      clearAddStudentFormInputs();
-      updateStudentList(student_array);
-}
+//       student_array.push(student_obj);
+//       console.log(student_obj);
+//       clearAddStudentFormInputs();
+//       updateStudentList(student_array);
+// }
 
 function addStudentToServer(){
     
@@ -139,7 +139,7 @@ function addStudentToServer(){
                               name: $('#studentName').val(),
                               course:$("#course").val(),
                               grade: $('#studentGrade').val(),
-                              id: responseObject.new_id
+                              student_id: responseObject.new_id
                         }
                         student_array.push(student_obj);
                         updateStudentList(student_array);
@@ -164,6 +164,28 @@ function clearAddStudentFormInputs(){
       $("#course").val("");
       $("#studentGrade").val("");
 }
+
+
+
+
+function deleteStudentFromServer (student_obj, studentId ) {
+      studentToDelete = {
+            dataType: "json",
+            url: "http://s-apis.learningfuze.com/sgt/delete",
+            method: "post",
+            data: {api_key: 'gmXk1sAmOs',
+            student_id: studentId },
+            success: function(response) {
+                  console.log(response);
+                  var deleteIndex = student_array.indexOf(student_obj);
+                        student_array.splice(deleteIndex,1);
+                        $('tbody').empty();
+                        updateStudentList(student_array);
+
+            }
+      }
+      $.ajax(studentToDelete);
+}
 /***************************************************************************************************
  * renderStudentOnDom - take in a student object, create html elements from the values and then append the elements
  * into the .student_list tbody
@@ -176,12 +198,16 @@ function renderStudentOnDom(student_obj){
       var studentGradeDiv = $('<td>').text(student_obj.grade);
       var operationTd = $('<td>');
       var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
-      deleteButton.on('click', function() {
-            var deleteIndex = student_array.indexOf(student_obj);
-            student_array.splice(deleteIndex,1);
-            $('tbody').empty();
-            updateStudentList(student_array);
-      })
+      deleteButton.on('click', ()=>{
+            deleteStudentFromServer(student_obj, student_obj.student_id);
+      });
+      
+      // function() {
+      //       var deleteIndex = student_array.indexOf(student_obj);
+      //       student_array.splice(deleteIndex,1);
+      //       $('tbody').empty();
+      //       updateStudentList(student_array);
+      // })
       operationTd.append(deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
       $("#tableDataGoesHere").append( studentRow);
