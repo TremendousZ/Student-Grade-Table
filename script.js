@@ -92,7 +92,8 @@ function handleAddClicked( event ){
       let studentCourseInput = $("#course").val();
       let studentGradeInput = $('#studentGrade').val();
       let nameRegexCheck = /^[a-zA-Z]/;
-      let gradeRegexCheck = /^[0-9]{3}/;
+      let courseRegexCheck = /^([A-Z]{1}[a-z]{1,15}) [0-9]{3}/
+      let gradeRegexCheck = /[0-9]{1,3}/;
       // if(nameRegexCheck.test(studentNameInput) && nameRegexCheck.test(studentCourseInput) && gradeRegexCheck.test(studentGradeInput)){
       //       addStudentToServer();
       // } else {
@@ -101,12 +102,25 @@ function handleAddClicked( event ){
       // }
       
       if ( nameRegexCheck.test(studentNameInput)) {
-            
+          if(courseRegexCheck.test(studentCourseInput)) {
+            if(gradeRegexCheck.test(studentGradeInput)) {
+                  addStudentToServer();
+            } else{
+                  let gradeError = $('<p>').text("Please enter a number between 1 and 100");
+                  $("#studentGradeError").append(gradeError);
+            }
+          } else {
+            let courseError = $('<p>').text("Please enter a Course Name with a capital first letter and a space before the course number. Ex: Math 415");
+            $("#studentCourseError").append(courseError);
+          }
       } else{
-           let nameError = $('<div>').text("Please enter a student name that only contains letters");
-           $('.errorMessage').append(nameError);
+           let nameError = $('<p>').text("Please enter a student name that only contains letters");
+           $('#studentNameError').append(nameError);
 
       }
+
+      // clear out divs upon submit or second attempt
+
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
