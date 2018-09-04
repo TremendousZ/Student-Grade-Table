@@ -88,10 +88,25 @@ function getStudentData(){
  */
 function handleAddClicked( event ){
       // $('tbody').empty();
-      addStudentToServer();
-      // addStudent();
-      // renderStudentOnDom(student_obj);
-      // clearAddStudentFormInputs();
+      let studentNameInput = $('#studentName').val();
+      let studentCourseInput = $("#course").val();
+      let studentGradeInput = $('#studentGrade').val();
+      let nameRegexCheck = /^[a-zA-Z]/;
+      let gradeRegexCheck = /^[0-9]{3}/;
+      // if(nameRegexCheck.test(studentNameInput) && nameRegexCheck.test(studentCourseInput) && gradeRegexCheck.test(studentGradeInput)){
+      //       addStudentToServer();
+      // } else {
+      //       clearAddStudentFormInputs();
+
+      // }
+      
+      if ( nameRegexCheck.test(studentNameInput)) {
+            
+      } else{
+           let nameError = $('<div>').text("Please enter a student name that only contains letters");
+           $('.errorMessage').append(nameError);
+
+      }
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
