@@ -87,6 +87,8 @@ function getStudentData(){
        none
  */
 function handleAddClicked( event ){
+      $("#studentGradeError").text('');
+
       // $('tbody').empty();
       let studentNameInput = $('#studentName').val();
       let studentCourseInput = $("#course").val();
@@ -94,33 +96,22 @@ function handleAddClicked( event ){
       let nameRegexCheck = /^[a-zA-Z]/;
       let courseRegexCheck = /^([A-Z]{1}[a-z]{1,15}) [0-9]{3}/
       let gradeRegexCheck = /[0-9]{1,3}/;
-      // if(nameRegexCheck.test(studentNameInput) && nameRegexCheck.test(studentCourseInput) && gradeRegexCheck.test(studentGradeInput)){
-      //       addStudentToServer();
-      // } else {
-      //       clearAddStudentFormInputs();
 
-      // }
-      
       if ( nameRegexCheck.test(studentNameInput)) {
           if(courseRegexCheck.test(studentCourseInput)) {
             if(gradeRegexCheck.test(studentGradeInput)) {
                   addStudentToServer();
             } else{
-                  let gradeError = $('<p>').text("Please enter a number between 1 and 100");
-                  $("#studentGradeError").append(gradeError);
+                  $("#studentCourseError").text('');
+                  $("#studentGradeError").text("Please enter a number between 1 and 100");
             }
           } else {
-            let courseError = $('<p>').text("Please enter a Course Name with a capital first letter and a space before the course number. Ex: Math 415");
-            $("#studentCourseError").append(courseError);
+                  $('#studentNameError').text('');
+                  $("#studentCourseError").text("Please enter a Course Name with a capital first letter and a space before the course number. Ex: Math 415");
           }
       } else{
-           let nameError = $('<p>').text("Please enter a student name that only contains letters");
-           $('#studentNameError').append(nameError);
-
+            $('#studentNameError').text("Please enter a student name that only contains letters");
       }
-
-      // clear out divs upon submit or second attempt
-
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
