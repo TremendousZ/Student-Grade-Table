@@ -45,6 +45,7 @@ function addClickHandlersToElements(){
       $(".add").on("click", handleAddClicked);
       $(".cancel").on("click", handleCancelClick);
       $(".getData").on("click", getStudentData); 
+      $("")
 }
 
 
@@ -217,18 +218,18 @@ function renderStudentOnDom(student_obj){
       var studentCourseDiv = $('<td>').text(student_obj.course)
       var studentGradeDiv = $('<td>').text(student_obj.grade);
       var operationTd = $('<td>');
+      var editButton = $('<button>').addClass('btn btn-warning').text("Edit");
+      editButton.on('click', ()=>{
+            debugger;
+            editStudent(student_obj.name,student_obj.course,student_obj.grade,student_obj.student_id);
+            $(".blackOut").addClass('show');
+      })
       var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
       deleteButton.on('click', ()=>{
             deleteStudentFromServer(student_obj, student_obj.student_id);
       });
       
-      // function() {
-      //       var deleteIndex = student_array.indexOf(student_obj);
-      //       student_array.splice(deleteIndex,1);
-      //       $('tbody').empty();
-      //       updateStudentList(student_array);
-      // })
-      operationTd.append(deleteButton);
+      operationTd.append(editButton,deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
       $("#tableDataGoesHere").append( studentRow);
 }
@@ -269,7 +270,24 @@ function calculateGradeAverage( array ){
  */
 function renderGradeAverage( number ){
       $('.avgGrade').text( number );
+};
+
+
+
+function editStudent(name , course , grade){
+      $("blackOut").addClass('show');
+      // let newStudentName = $("#studentName").value();
+      // if(newStudentName === ""){
+      //       newStudentName = name;
+      // }
+      // let newStudentCourse = $("#studentCourse").value();
+      // if(newStudentCourse === ""){
+      //       newStudentCourse = course;
+      // }
+      // let newStudentGrade = $("#studentGrade").value();
+      // if(newStudentGrade === ""){
+      //       newStudentGrade = grade;
+      // }
+
+      
 }
-
-
-
