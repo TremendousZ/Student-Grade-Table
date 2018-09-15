@@ -45,7 +45,9 @@ function addClickHandlersToElements(){
       $(".add").on("click", handleAddClicked);
       $(".cancel").on("click", handleCancelClick);
       $(".getData").on("click", getStudentData); 
-      $("")
+      // $("#blackOut").on("click", closeModal);
+      $("#closeModal").on("click", closeModal);
+      
 }
 
 
@@ -62,7 +64,6 @@ function getStudentData(){
 }
 
  function fillStudentTable( response ){
-       debugger;
       // var lfzStudentData = [];
       student_array = response.data;
       // for (var index = 0; index < student_array.length; index++) {
@@ -186,8 +187,22 @@ function clearAddStudentFormInputs(){
       $("#studentGrade").val("");
 }
 
-
-
+function editStudentFromServer (student_obj, studentId ) {
+      studentToEdit = {
+            dataType: "json",
+            url: "http://s-apis.learningfuze.com/sgt/update",
+            method: "post",
+            data: {api_key: 'gmXk1sAmOs',
+            student_id: studentId },
+            success: function(response) {
+                  console.log(response);
+                  var editIndex = student_array.indexOf(student_obj);
+                        student_array[editIndex] = student_obj;
+                        updateStudentList(student_array);
+            }
+      }
+      $.ajax(studentToEdit);
+}
 
 function deleteStudentFromServer (student_obj, studentId ) {
       studentToDelete = {
@@ -220,7 +235,6 @@ function renderStudentOnDom(student_obj){
       var operationTd = $('<td>');
       var editButton = $('<button>').addClass('btn btn-warning').text("Edit");
       editButton.on('click', ()=>{
-            debugger;
             editStudent(student_obj.name,student_obj.course,student_obj.grade,student_obj.student_id);
             $(".blackOut").addClass('show');
       })
@@ -274,20 +288,39 @@ function renderGradeAverage( number ){
 
 
 
-function editStudent(name , course , grade){
-      $("blackOut").addClass('show');
-      // let newStudentName = $("#studentName").value();
-      // if(newStudentName === ""){
-      //       newStudentName = name;
-      // }
-      // let newStudentCourse = $("#studentCourse").value();
-      // if(newStudentCourse === ""){
-      //       newStudentCourse = course;
-      // }
-      // let newStudentGrade = $("#studentGrade").value();
-      // if(newStudentGrade === ""){
-      //       newStudentGrade = grade;
-      // }
+function editStudent(name , course , grade, studentId){
+      $('.currentStudentName span').text(name);
+      let newStudentName = $("#editStudentName").val();
+      if(newStudentName === ""){
+            newStudentName = name;
+      }
+      
+      $('.currentStudentCourse span').text(course);
+      let newStudentCourse = $("#editStudentCourse").val();
+      if(newStudentCourse === ""){
+            newStudentCourse = course;
+      }
+      
+      $('.currentStudentGrade span').text(grade);
+      let newStudentGrade = $("#editstudentGrade").val();
+      if(newStudentGrade === ""){
+            newStudentGrade = grade;
+      }  
+}
 
+function closeModal(){
+      $('#blackOut').removeClass('show');
+}
+
+function addEditedStudent(name, course, grade, studentId){
+
+      var editedStudent_obj = {
+            name: name,
+            course: course,
+            grade: grade,
+            student_id: studentId
+      }
+      
+      editStudentFromServer(editedStudent_obj,studentId);
       
 }
