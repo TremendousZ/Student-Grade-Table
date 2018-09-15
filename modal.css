@@ -1,4 +1,4 @@
-.blackOut{
+#blackOut{
     display: none;
     background-color: rgba(0,0,0,.4);
     position: absolute;
@@ -11,12 +11,18 @@
 .editModal{
     background-color: white;
     top: 25%;
+    z-index: 3;
 }
 
 .editModal > form{
     padding: 5% 2%;
 }
 
+#closeModal{
+    position: absolute;
+    top:2%;
+    right:2%;
+}
 
 .show{
     display: block;
