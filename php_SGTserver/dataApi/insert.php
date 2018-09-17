@@ -21,11 +21,11 @@ $result = $conn->query($insertData);
 //check if $result is empty.  
 if(empty($result)){
 	//if it is, add 'database error' to errors
-	$output['error'][] = 'no data to insert';
+	$output['error'][] = 'database error';
 } else {
 	//else: 
 	//check if the number of affected rows is 1
-	if (mysqli_num_rows($conn) > 0){
+	if (mysqli_affected_rows($conn) > 0){
 		//if it did, change output success to true
 		$output['success'] = true;
 		//get the insert ID of the row that was added
@@ -33,6 +33,7 @@ if(empty($result)){
 		$last_id = $conn->insert_id;
 		//add 'insertID' to $outut and set the value to the row's insert ID
 		$output = $last_id;
+		
 	}else{
 	//if not, add to the errors: 'insert error'
 	$output['errors'][] = 'insert error';

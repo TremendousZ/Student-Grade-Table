@@ -1,16 +1,18 @@
 <?php
 
 //check if you have all the data you need from the client-side call.  This should include the fields being changed and the ID of the student to be changed
-if(){
-
+if(!GET){
+	print('no data');
 } else {
-
-
+	$name = $_GET['name'];
+	$grade = $_GET['grade'];
+	$course_name = $_GET['course_name'];
+	$id = $_GET['student_id'];
 //if not, add an appropriate error to errors
 }
 
 //write a query that updates the data at the given student ID.  
-$editStudent = 'UPDATE student_table SET name, SET grade, SET course_name'
+$editStudent = "UPDATE `student_table` SET `name` = '$name', `grade` = '$grade', `course_name` = '$course_name' WHERE `id` = '$id'";
 
 //send the query to the database, store the result of the query into $result
 $result = $conn->query($editStudent);
@@ -22,7 +24,7 @@ if(empty($result)){
 	if(mysqli_num_rows($result) === 1){
 		$output['success'] = true;
 	} else {
-		$output['error'] = 'update error'
+		$output['error'] = 'update error';
 	}
 }
 	//if it is, add 'database error' to errors

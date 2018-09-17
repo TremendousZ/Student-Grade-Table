@@ -53,20 +53,19 @@ function addClickHandlersToElements(){
 
 
 function getStudentData(){
-      $('tbody').empty();
       var studentData = {
             dataType:"json",
-            url: "./php_SGTserver/data.php",
+            url: "php_SGTserver/data.php",
             method:'GET',
             data: {action: 'readAll'},
-            success: fillStudentTable,
-            
+            success: fillStudentTable,   
       }
       $.ajax(studentData);
 }
 
 function fillStudentTable( response ){
       student_array = response.data;
+      $('tbody').empty();
       updateStudentList( student_array );
 }
 
@@ -89,7 +88,7 @@ function handleAddClicked( event ){
             course_name: studentCourseInput,
             id:null,
       }
-      let nameRegexCheck = /^[a-zA-Z]/;
+      let nameRegexCheck = /^[a-zA-Z]+$/;
       let courseRegexCheck = /^([A-Z]{1}[a-z]{1,15}) [0-9]{3}/
       let gradeRegexCheck = /[0-9]{1,3}/;
 
@@ -97,6 +96,11 @@ function handleAddClicked( event ){
           if(courseRegexCheck.test(studentCourseInput)) {
             if(gradeRegexCheck.test(studentGradeInput)) {
                   addStudentToServer(studentObject);
+                  clearAddStudentFormInputs();
+                  getStudentData();
+                  $("#studentCourseError").text('');
+                  $('#studentNameError').text('');
+                  $("#studentGradeError").text('');
             } else{
                   $("#studentCourseError").text('');
                   $("#studentGradeError").text("Please enter a number between 1 and 100");
@@ -150,9 +154,9 @@ function addStudentToServer(student_obj){
                   grade: student_obj.grade,
                   student_id: student_obj.student_id,
             } ,
-            success: function( responseObject) {
+            success: function() {
                         getStudentData();
-                        // clearAddStudentFormInputs();    
+                        clearAddStudentFormInputs();    
             },
             failure: function(param, param2, param3){
                   debugger;
@@ -173,38 +177,36 @@ function clearAddStudentFormInputs(){
 function editStudentFromServer (student_obj ) {
       studentToEdit = {
             dataType: "json",
-            url: "data.php",
+            url: "php_SGTserver/data.php",
             method: "GET",
             data: {
+                  action:'update',
                   name: student_obj.name,
                   course_name: student_obj.course_name,
                   grade: student_obj.grade,
                   student_id: student_obj.student_id,
              },
             success: function(response) {
-                  console.log(response);
-                  // var editIndex = student_array.indexOf(student_obj);
-                  //       student_array[editIndex] = student_obj;
-                        updateStudentList(student_array);
+                  getStudentData();
             }
       }
-      $.ajax(studentToEdit);
+      $.ajax(studentToEdit);  
 }
 
-function deleteStudentFromServer (student_obj, studentId ) {
+function deleteStudentFromServer (student_obj ) {
       studentToDelete = {
             dataType: "json",
-            url: "http://s-apis.learningfuze.com/sgt/delete",
-            method: "post",
-            data: {api_key: 'gmXk1sAmOs',
-            student_id: studentId },
+            url: "php_SGTserver/data.php",
+            method: "GET",
+            data: {
+                  action:'delete',
+                  student_id: student_obj.id,
+            },
             success: function(response) {
-                  console.log(response);
                   var deleteIndex = student_array.indexOf(student_obj);
                         student_array.splice(deleteIndex,1);
                         $('tbody').empty();
-                        updateStudentList(student_array);
-
+                        getStudentData();
             }
       }
       $.ajax(studentToDelete);
@@ -227,9 +229,8 @@ function renderStudentOnDom(student_obj){
       })
       var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
       deleteButton.on('click', ()=>{
-            deleteStudentFromServer(student_obj, student_obj.student_id);
+            deleteStudentFromServer(student_obj);
       });
-      
       operationTd.append(editButton,deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
       $("#tableDataGoesHere").append( studentRow);
