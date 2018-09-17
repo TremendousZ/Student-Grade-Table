@@ -53,33 +53,22 @@ function addClickHandlersToElements(){
 
 
 function getStudentData(){
+      $('tbody').empty();
       var studentData = {
             dataType:"json",
-            url: "https://s-apis.learningfuze.com/sgt/get",
-            method:'POST',
-            data: {api_key:'gmXk1sAmOs'},
+            url: "./php_SGTserver/data.php",
+            method:'GET',
+            data: {action: 'readAll'},
             success: fillStudentTable,
             
       }
       $.ajax(studentData);
 }
 
- function fillStudentTable( response ){
-      // var lfzStudentData = [];
+function fillStudentTable( response ){
       student_array = response.data;
-      // for (var index = 0; index < student_array.length; index++) {
-      //       var student = student_array[index]
-      //       var studentObject = {
-      //             name: student.name,
-      //             course: student.course,
-      //             grade: student.grade,
-      //       }
-      //       lfzStudentData.push(studentObject);
-      
-      // }
-
       updateStudentList( student_array );
- }
+}
 
 
 
@@ -91,11 +80,15 @@ function getStudentData(){
  */
 function handleAddClicked( event ){
       $("#studentGradeError").text('');
-
-      // $('tbody').empty();
       let studentNameInput = $('#studentName').val();
       let studentCourseInput = $("#course").val();
       let studentGradeInput = $('#studentGrade').val();
+      let studentObject = {
+            name: studentNameInput,
+            grade: studentGradeInput,
+            course_name: studentCourseInput,
+            id:null,
+      }
       let nameRegexCheck = /^[a-zA-Z]/;
       let courseRegexCheck = /^([A-Z]{1}[a-z]{1,15}) [0-9]{3}/
       let gradeRegexCheck = /[0-9]{1,3}/;
@@ -103,7 +96,7 @@ function handleAddClicked( event ){
       if ( nameRegexCheck.test(studentNameInput)) {
           if(courseRegexCheck.test(studentCourseInput)) {
             if(gradeRegexCheck.test(studentGradeInput)) {
-                  addStudentToServer();
+                  addStudentToServer(studentObject);
             } else{
                   $("#studentCourseError").text('');
                   $("#studentGradeError").text("Please enter a number between 1 and 100");
@@ -144,33 +137,22 @@ function handleCancelClick(){
 //       updateStudentList(student_array);
 // }
 
-function addStudentToServer(){
+function addStudentToServer(student_obj){
     
       var studentToAdd = {
             dataType: 'json',
-            url: "http://s-apis.learningfuze.com/sgt/create",
-            method:"POST",
-            data: { api_key : 'gmXk1sAmOs',
-            name:$("#studentName").val() ,
-            course:$("#course").val(),
-            grade: $('#studentGrade').val(),
+            url: "php_SGTserver/data.php",
+            method:"GET",
+            data: { 
+                  action: 'insert',
+                  name: student_obj.name,
+                  course_name: student_obj.course_name,
+                  grade: student_obj.grade,
+                  student_id: student_obj.student_id,
             } ,
             success: function( responseObject) {
-                
-                  if( responseObject.success ) {
-                        var student_obj = {
-                              name: $('#studentName').val(),
-                              course:$("#course").val(),
-                              grade: $('#studentGrade').val(),
-                              student_id: responseObject.new_id
-                        }
-                        student_array.push(student_obj);
-                        updateStudentList(student_array);
-                        clearAddStudentFormInputs();
-                  } else {
-                        debugger;
-                  }
-                  
+                        getStudentData();
+                        // clearAddStudentFormInputs();    
             },
             failure: function(param, param2, param3){
                   debugger;
@@ -188,17 +170,21 @@ function clearAddStudentFormInputs(){
       $("#studentGrade").val("");
 }
 
-function editStudentFromServer (student_obj, studentId ) {
+function editStudentFromServer (student_obj ) {
       studentToEdit = {
             dataType: "json",
-            url: "http://s-apis.learningfuze.com/sgt/update",
-            method: "post",
-            data: {api_key: 'gmXk1sAmOs',
-            student_id: studentId },
+            url: "data.php",
+            method: "GET",
+            data: {
+                  name: student_obj.name,
+                  course_name: student_obj.course_name,
+                  grade: student_obj.grade,
+                  student_id: student_obj.student_id,
+             },
             success: function(response) {
                   console.log(response);
-                  var editIndex = student_array.indexOf(student_obj);
-                        student_array[editIndex] = student_obj;
+                  // var editIndex = student_array.indexOf(student_obj);
+                  //       student_array[editIndex] = student_obj;
                         updateStudentList(student_array);
             }
       }
@@ -231,7 +217,7 @@ function deleteStudentFromServer (student_obj, studentId ) {
 function renderStudentOnDom(student_obj){
       var studentRow = $('<tr>');
       var studentNameDiv = $('<td>').text(student_obj.name);
-      var studentCourseDiv = $('<td>').text(student_obj.course)
+      var studentCourseDiv = $('<td>').text(student_obj.course_name)
       var studentGradeDiv = $('<td>').text(student_obj.grade);
       var operationTd = $('<td>');
       var editButton = $('<button>').addClass('btn btn-warning').text("Edit");
@@ -256,6 +242,7 @@ function renderStudentOnDom(student_obj){
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
 function updateStudentList(array){
+      console.log('student Array:', array );
       for (var index = 0; index < array.length; index++) {
       renderStudentOnDom(array[index]);
       renderGradeAverage(calculateGradeAverage(array));
