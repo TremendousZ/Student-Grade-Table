@@ -3,6 +3,19 @@
 <head>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="modal.css">
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyB7evHvOvWRsZPwEmKNUg0XBp8zihMIXTs",
+        authDomain: "student-grade-table-add21.firebaseapp.com",
+        databaseURL: "https://student-grade-table-add21.firebaseio.com",
+        projectId: "student-grade-table-add21",
+        storageBucket: "student-grade-table-add21.appspot.com",
+        messagingSenderId: "719874896954"
+    };
+    firebase.initializeApp(config);
+    </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="student_grade_table.js"></script>
@@ -88,6 +101,42 @@
             <button type = "submit" class = "btn btn-success" onclick="editStudent()">Submit Changes</button>
         </form>
     </div>
+</div>
+<div class ="col-xs-12" id="login">
+    <div class ="container">
+        <div class ="leftColumn">
+            <form class="col-xs-offset-1 col-xs-10" onsubmit="teacherLogIn()">
+                <div class = "form-group">
+                    <label class="teacherUserName"> Teacher Login Id:<span></span></label>
+                    <input type = "text" class = "form-control" id= "teacherLoginInfo" placeholder= "Enter Your Login ID" />
+                </div>
+                <div class = "form-group">
+                    <label class="teacherPassword">Password:<span></span></label>
+                    <input type = "password" class = "form-control" id= "teacherPassword" placeholder= "Login Password" />
+                </div>
+                
+                <button type = "button" class = "btn btn-danger">Clear</button>
+                <button type = "submit" class = "btn btn-success">Login</button>
+            </form>
+        </div>
+        <div class ="rightColumn">
+            <form class="col-xs-offset-1 col-xs-10" onsubmit="studentLogIn()">
+                <div class = "form-group">
+                    <label class="studentUserName"> Student Id:<span></span></label>
+                    <input type = "text" class = "form-control" id= "studentLoginId" placeholder= "Enter your Student ID" />
+                </div>
+                <div class = "form-group">
+                    <label class="studentPassword">Password:<span></span></label>
+                    <input type = "password" class = "form-control" id= "studentPassword" placeholder= "Student Password" />
+                </div>
+                
+                <button type = "button" class = "btn btn-danger">Clear</button>
+                <button type = "submit" class = "btn btn-success">Login</button>
+            </form>
+        </div>
+
+    </div>
+
 </div>
 </body>
 </html>

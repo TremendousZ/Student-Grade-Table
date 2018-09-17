@@ -33,6 +33,7 @@ function initializeApp(){
       addClickHandlersToElements();
       clearAddStudentFormInputs();
       getStudentData();
+      // showLogin();
 }
 
 /***************************************************************************************************
@@ -54,7 +55,7 @@ function addClickHandlersToElements(){
 function getStudentData(){
       var studentData = {
             dataType:"json",
-            url: "http://s-apis.learningfuze.com/sgt/get",
+            url: "https://s-apis.learningfuze.com/sgt/get",
             method:'POST',
             data: {api_key:'gmXk1sAmOs'},
             success: fillStudentTable,
@@ -323,4 +324,9 @@ function addEditedStudent(name, course, grade, studentId){
       
       editStudentFromServer(editedStudent_obj,studentId);
       
+}
+
+function showLogin(){
+      $("#login").addClass('show');
+
 }

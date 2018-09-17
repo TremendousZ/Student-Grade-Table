@@ -27,3 +27,28 @@
 .show{
     display: block;
 }
+
+.rightColumn, .leftColumn{
+    display: inline-block;
+    box-sizing: border-box;
+    width:49%;
+    position: absolute;
+    top:25%;
+}
+
+.rightColumn{
+    left:50%;
+}
+.leftColumn{
+    border-right: 1px solid grey; 
+}
+
+#login{
+    display: none;
+    position: absolute;
+    background-color: white;
+    top:0;
+    left:0;
+    height: 100%;
+    z-index: 2;
+}
