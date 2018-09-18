@@ -33,6 +33,7 @@ function initializeApp(){
       addClickHandlersToElements();
       clearAddStudentFormInputs();
       getStudentData();
+      // showLogin();
 }
 
 /***************************************************************************************************
@@ -54,31 +55,19 @@ function addClickHandlersToElements(){
 function getStudentData(){
       var studentData = {
             dataType:"json",
-            url: "http://s-apis.learningfuze.com/sgt/get",
-            method:'POST',
-            data: {api_key:'gmXk1sAmOs'},
-            success: fillStudentTable,
-            
+            url: "php_SGTserver/data.php",
+            method:'GET',
+            data: {action: 'readAll'},
+            success: fillStudentTable,   
       }
       $.ajax(studentData);
 }
 
- function fillStudentTable( response ){
-      // var lfzStudentData = [];
+function fillStudentTable( response ){
       student_array = response.data;
-      // for (var index = 0; index < student_array.length; index++) {
-      //       var student = student_array[index]
-      //       var studentObject = {
-      //             name: student.name,
-      //             course: student.course,
-      //             grade: student.grade,
-      //       }
-      //       lfzStudentData.push(studentObject);
-      
-      // }
-
+      $('tbody').empty();
       updateStudentList( student_array );
- }
+}
 
 
 
@@ -90,19 +79,28 @@ function getStudentData(){
  */
 function handleAddClicked( event ){
       $("#studentGradeError").text('');
-
-      // $('tbody').empty();
       let studentNameInput = $('#studentName').val();
       let studentCourseInput = $("#course").val();
       let studentGradeInput = $('#studentGrade').val();
-      let nameRegexCheck = /^[a-zA-Z]/;
+      let studentObject = {
+            name: studentNameInput,
+            grade: studentGradeInput,
+            course_name: studentCourseInput,
+            id:null,
+      }
+      let nameRegexCheck = /^[a-zA-Z]+$/;
       let courseRegexCheck = /^([A-Z]{1}[a-z]{1,15}) [0-9]{3}/
-      let gradeRegexCheck = /[0-9]{1,3}/;
+      let gradeRegexCheck = /^[0-9]{1,3}/;
 
       if ( nameRegexCheck.test(studentNameInput)) {
           if(courseRegexCheck.test(studentCourseInput)) {
             if(gradeRegexCheck.test(studentGradeInput)) {
-                  addStudentToServer();
+                  addStudentToServer(studentObject);
+                  clearAddStudentFormInputs();
+                  getStudentData();
+                  $("#studentCourseError").text('');
+                  $('#studentNameError').text('');
+                  $("#studentGradeError").text('');
             } else{
                   $("#studentCourseError").text('');
                   $("#studentGradeError").text("Please enter a number between 1 and 100");
@@ -143,33 +141,22 @@ function handleCancelClick(){
 //       updateStudentList(student_array);
 // }
 
-function addStudentToServer(){
+function addStudentToServer(student_obj){
     
       var studentToAdd = {
             dataType: 'json',
-            url: "http://s-apis.learningfuze.com/sgt/create",
-            method:"POST",
-            data: { api_key : 'gmXk1sAmOs',
-            name:$("#studentName").val() ,
-            course:$("#course").val(),
-            grade: $('#studentGrade').val(),
+            url: "php_SGTserver/data.php",
+            method:"GET",
+            data: { 
+                  action: 'insert',
+                  name: student_obj.name,
+                  course_name: student_obj.course_name,
+                  grade: student_obj.grade,
+                  student_id: student_obj.student_id,
             } ,
-            success: function( responseObject) {
-                
-                  if( responseObject.success ) {
-                        var student_obj = {
-                              name: $('#studentName').val(),
-                              course:$("#course").val(),
-                              grade: $('#studentGrade').val(),
-                              student_id: responseObject.new_id
-                        }
-                        student_array.push(student_obj);
-                        updateStudentList(student_array);
-                        clearAddStudentFormInputs();
-                  } else {
-                        debugger;
-                  }
-                  
+            success: function() {
+                        getStudentData();
+                        clearAddStudentFormInputs();    
             },
             failure: function(param, param2, param3){
                   debugger;
@@ -187,37 +174,44 @@ function clearAddStudentFormInputs(){
       $("#studentGrade").val("");
 }
 
-function editStudentFromServer (student_obj, studentId ) {
+function editStudentFromServer (student_obj ) {
       studentToEdit = {
             dataType: "json",
-            url: "http://s-apis.learningfuze.com/sgt/update",
-            method: "post",
-            data: {api_key: 'gmXk1sAmOs',
-            student_id: studentId },
+            url: "php_SGTserver/data.php",
+            method: "GET",
+            data: {
+                  action:'update',
+                  name: student_obj.name,
+                  course: student_obj.course,
+                  grade: student_obj.grade,
+                  id: student_obj.id,
+             },
             success: function(response) {
+                  getStudentData();
+            },
+            error: function(response){
                   console.log(response);
-                  var editIndex = student_array.indexOf(student_obj);
-                        student_array[editIndex] = student_obj;
-                        updateStudentList(student_array);
             }
+            
+            
       }
-      $.ajax(studentToEdit);
+      $.ajax(studentToEdit);  
 }
 
-function deleteStudentFromServer (student_obj, studentId ) {
+function deleteStudentFromServer (student_obj ) {
       studentToDelete = {
             dataType: "json",
-            url: "http://s-apis.learningfuze.com/sgt/delete",
-            method: "post",
-            data: {api_key: 'gmXk1sAmOs',
-            student_id: studentId },
+            url: "php_SGTserver/data.php",
+            method: "GET",
+            data: {
+                  action:'delete',
+                  student_id: student_obj.id,
+            },
             success: function(response) {
-                  console.log(response);
                   var deleteIndex = student_array.indexOf(student_obj);
                         student_array.splice(deleteIndex,1);
                         $('tbody').empty();
-                        updateStudentList(student_array);
-
+                        getStudentData();
             }
       }
       $.ajax(studentToDelete);
@@ -230,19 +224,18 @@ function deleteStudentFromServer (student_obj, studentId ) {
 function renderStudentOnDom(student_obj){
       var studentRow = $('<tr>');
       var studentNameDiv = $('<td>').text(student_obj.name);
-      var studentCourseDiv = $('<td>').text(student_obj.course)
+      var studentCourseDiv = $('<td>').text(student_obj.course_name)
       var studentGradeDiv = $('<td>').text(student_obj.grade);
       var operationTd = $('<td>');
       var editButton = $('<button>').addClass('btn btn-warning').text("Edit");
       editButton.on('click', ()=>{
-            editStudent(student_obj.name,student_obj.course,student_obj.grade,student_obj.student_id);
-            $(".blackOut").addClass('show');
+            editStudent(student_obj);
+            
       })
       var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
       deleteButton.on('click', ()=>{
-            deleteStudentFromServer(student_obj, student_obj.student_id);
+            deleteStudentFromServer(student_obj);
       });
-      
       operationTd.append(editButton,deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
       $("#tableDataGoesHere").append( studentRow);
@@ -255,6 +248,7 @@ function renderStudentOnDom(student_obj){
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
 function updateStudentList(array){
+      console.log('student Array:', array );
       for (var index = 0; index < array.length; index++) {
       renderStudentOnDom(array[index]);
       renderGradeAverage(calculateGradeAverage(array));
@@ -288,39 +282,48 @@ function renderGradeAverage( number ){
 
 
 
-function editStudent(name , course , grade, studentId){
-      $('.currentStudentName span').text(name);
-      let newStudentName = $("#editStudentName").val();
-      if(newStudentName === ""){
-            newStudentName = name;
-      }
-      
-      $('.currentStudentCourse span').text(course);
-      let newStudentCourse = $("#editStudentCourse").val();
-      if(newStudentCourse === ""){
-            newStudentCourse = course;
-      }
-      
-      $('.currentStudentGrade span').text(grade);
-      let newStudentGrade = $("#editstudentGrade").val();
-      if(newStudentGrade === ""){
-            newStudentGrade = grade;
-      }  
+function editStudent(student_obj){
+      $("#blackOut").addClass('show');
+      $('.currentStudentName span').text(student_obj.name);
+      $('.currentStudentCourse span').text(student_obj.course_name);
+      $('.currentStudentGrade span').text(student_obj.grade);
+      $('#studentIdNumber').text(student_obj.id);
 }
 
 function closeModal(){
       $('#blackOut').removeClass('show');
 }
 
-function addEditedStudent(name, course, grade, studentId){
+function addEditedStudent(){
+      event.preventDefault();
+      let newStudentName = $("#editStudentName").val();
+      if(newStudentName === ""){
+            newStudentName = $('.currentStudentName span').text();
+      }
+      let newStudentCourse = $("#editStudentCourse").val();
+      if(newStudentCourse === ""){
+            newStudentCourse = $('.currentStudentCourse span').text();
+      }
+      let newStudentGrade = $("#editStudentGrade").val();
+      if(newStudentGrade === ""){
+            newStudentGrade = $('.currentStudentGrade span').text();
+      }  
 
+      let studentId = $("#studentIdNumber").text();
+
+      
       var editedStudent_obj = {
-            name: name,
-            course: course,
-            grade: grade,
-            student_id: studentId
+            name: newStudentName,
+            course: newStudentCourse,
+            grade: newStudentGrade,
+            id: studentId
       }
       
-      editStudentFromServer(editedStudent_obj,studentId);
+      editStudentFromServer(editedStudent_obj);
       
+}
+
+function showLogin(){
+      $("#login").addClass('show');
+
 }
