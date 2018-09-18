@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="modal.css">
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="student_grade_table.js"></script>
@@ -71,7 +72,7 @@
 <div class="col-xs-12" id="blackOut">
     <div class ="editModal container col-xs-8 col-xs-offset-2">
             <button class="btn btn-danger" id="closeModal" >X</button>
-        <form class="col-xs-offset-1 col-xs-10" onsubmit="addEditedStudent()">
+        <form class="col-xs-offset-1 col-xs-10" onsubmit='addEditedStudent()'>
             <div class = "form-group">
                 <label class="currentStudentName">Current Student Name: <span></span></label>
                 <input type = "text" class = "form-control" id= "editStudentName" placeholder= "New Student Name" />
@@ -85,7 +86,8 @@
                 <input type = "text" class = "form-control" id= "editStudentGrade" placeholder= "New Grade" />
             </div>
             <button type = "button" class = "btn btn-danger">Clear</button>
-            <button type = "submit" class = "btn btn-success" onclick="editStudent()">Submit Changes</button>
+            <button type = "submit" class = "btn btn-success" id="editStudentButton" >Submit Changes</button>
+            <p id="studentIdNumber"></p>
         </form>
     </div>
 </div>

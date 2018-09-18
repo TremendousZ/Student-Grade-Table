@@ -90,7 +90,7 @@ function handleAddClicked( event ){
       }
       let nameRegexCheck = /^[a-zA-Z]+$/;
       let courseRegexCheck = /^([A-Z]{1}[a-z]{1,15}) [0-9]{3}/
-      let gradeRegexCheck = /[0-9]{1,3}/;
+      let gradeRegexCheck = /^[0-9]{1,3}/;
 
       if ( nameRegexCheck.test(studentNameInput)) {
           if(courseRegexCheck.test(studentCourseInput)) {
@@ -182,13 +182,18 @@ function editStudentFromServer (student_obj ) {
             data: {
                   action:'update',
                   name: student_obj.name,
-                  course_name: student_obj.course_name,
+                  course: student_obj.course,
                   grade: student_obj.grade,
-                  student_id: student_obj.student_id,
+                  id: student_obj.id,
              },
             success: function(response) {
                   getStudentData();
+            },
+            error: function(response){
+                  console.log(response);
             }
+            
+            
       }
       $.ajax(studentToEdit);  
 }
@@ -224,8 +229,8 @@ function renderStudentOnDom(student_obj){
       var operationTd = $('<td>');
       var editButton = $('<button>').addClass('btn btn-warning').text("Edit");
       editButton.on('click', ()=>{
-            editStudent(student_obj.name,student_obj.course,student_obj.grade,student_obj.student_id);
-            $(".blackOut").addClass('show');
+            editStudent(student_obj);
+            
       })
       var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
       deleteButton.on('click', ()=>{
@@ -277,40 +282,44 @@ function renderGradeAverage( number ){
 
 
 
-function editStudent(name , course , grade, studentId){
-      $('.currentStudentName span').text(name);
-      let newStudentName = $("#editStudentName").val();
-      if(newStudentName === ""){
-            newStudentName = name;
-      }
-      
-      $('.currentStudentCourse span').text(course);
-      let newStudentCourse = $("#editStudentCourse").val();
-      if(newStudentCourse === ""){
-            newStudentCourse = course;
-      }
-      
-      $('.currentStudentGrade span').text(grade);
-      let newStudentGrade = $("#editstudentGrade").val();
-      if(newStudentGrade === ""){
-            newStudentGrade = grade;
-      }  
+function editStudent(student_obj){
+      $("#blackOut").addClass('show');
+      $('.currentStudentName span').text(student_obj.name);
+      $('.currentStudentCourse span').text(student_obj.course_name);
+      $('.currentStudentGrade span').text(student_obj.grade);
+      $('#studentIdNumber').text(student_obj.id);
 }
 
 function closeModal(){
       $('#blackOut').removeClass('show');
 }
 
-function addEditedStudent(name, course, grade, studentId){
+function addEditedStudent(){
+      event.preventDefault();
+      let newStudentName = $("#editStudentName").val();
+      if(newStudentName === ""){
+            newStudentName = $('.currentStudentName span').text();
+      }
+      let newStudentCourse = $("#editStudentCourse").val();
+      if(newStudentCourse === ""){
+            newStudentCourse = $('.currentStudentCourse span').text();
+      }
+      let newStudentGrade = $("#editStudentGrade").val();
+      if(newStudentGrade === ""){
+            newStudentGrade = $('.currentStudentGrade span').text();
+      }  
 
+      let studentId = $("#studentIdNumber").text();
+
+      
       var editedStudent_obj = {
-            name: name,
-            course: course,
-            grade: grade,
-            student_id: studentId
+            name: newStudentName,
+            course: newStudentCourse,
+            grade: newStudentGrade,
+            id: studentId
       }
       
-      editStudentFromServer(editedStudent_obj,studentId);
+      editStudentFromServer(editedStudent_obj);
       
 }
 
