@@ -11,40 +11,42 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
+    <div class="row header">
+        <img src="images/cppocto.png">
         <!-- only show this element when the isnt on mobile -->
-        <h1 class ="hidden-xs">Student Grade Table
+        <h1 class ="hidden-xs">Teacher Portal
             <small class= "pull-right">Grade Average : <span class="avgGrade"></span></small>
         </h1>
         <!-- only show this element when the user gets to a mobile version -->
-        <h3 class = "visible-xs col-xs-12" >Student Grade Table
+        <h3 class = "visible-xs col-xs-12" >Teacher Portal
             <small class="col-xs-offset-6" >Grade Average : <span class="avgGrade"></span></small>
         </h3>
     </div>
     <div class="student-add-form col-sm-4 col-sm-push-8">
         <h4>Add Student</h4>
-        <div id="studentNameError" class="text-danger"></div>
+        <div id="studentNameError" class="text-muted"></div>
         <div class="input-group form-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-user"></span>
             </span>
-            <input type="text" class="form-control" name="studentName" id="studentName" placeholder="Student Name">
+            <input type="text" class="form-control" name="studentName" id="studentName" placeholder="Student Name" onchange="handleAddClicked()">
+            <div class="goodInputName"></div>
         </div>
-        <div id="studentCourseError" class="text-danger"></div>
+        <div id="studentCourseError" class="text-muted"></div>
         <div class="input-group form-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-list-alt"></span>
             </span>
-            <input type="text" class="form-control" name="course" id="course"
-                   placeholder="Student Course">
+            <input type="text" class="form-control" name="course" id="course" placeholder="Student Course" onchange="handleAddClicked()">
+            <div class="goodInputCourse"></div>
         </div>
-        <div id="studentGradeError" class = "text-danger"></div>
+        <div id="studentGradeError" class = "text-muted"></div>
         <div class="input-group form-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-education"></span>
             </span>
-            <input type="text" class="form-control" name="studentGrade" id="studentGrade"
-                   placeholder="Student Grade">
+            <input type="text" class="form-control" name="studentGrade" id="studentGrade"placeholder="Student Grade" onchange="handleAddClicked()">
+            <div class="goodInputGrade"></div>
         </div>
 
         <button type="submit" class="btn btn-success add">Add</button>
@@ -126,6 +128,27 @@
 
     </div>
 
+</div>
+<div class="blackOut2">
+        <button class="btn btn-danger" id="closeModal" onclick="closeModal()">X</button>
+    <div class="deleteCheck">
+        <div id = 'deleteName'></div>
+        <div id = 'deleteCourse'></div>
+        <div id ='deleteGrade'></div>
+        <button class = 'btn btn-warning' id="cancelDelete">Cancel</button>
+        <button class = 'btn btn-danger' id="confirmDelete">Delete Listing</button>
+    </div>
+</div>
+<div class="blackOut3">
+        <button class="btn btn-danger" id="closeModal" onclick="closeModal()">X</button>
+    <div class="studentReportCard">
+        <div class='rc-studentName'></div>
+        <ul class="courseList">
+
+        </ul>
+        <div class="rc-studentGradeAvg"></div>
+        <div id="gpa"></div>
+    </div>
 </div>
 </body>
 </html>
