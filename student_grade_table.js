@@ -12,7 +12,6 @@ $(document).ready(initializeApp);
  */
 
 var student_array = [];
-
 /***********************
  * student_array - global array to hold student objects
  * @type {Array}
@@ -78,6 +77,7 @@ function fillStudentTable( response ){
        none
  */
 function handleAddClicked( event ){
+      console.log("This Event", event);
       $("#studentGradeError").text('');
       let studentNameInput = $('#studentName').val();
       let studentCourseInput = $("#course").val();
@@ -88,22 +88,32 @@ function handleAddClicked( event ){
             course_name: studentCourseInput,
             id:null,
       }
-      let nameRegexCheck = /^[a-zA-Z]+$/;
-      let courseRegexCheck = /^([A-Z]{1}[a-z]{1,15}) [0-9]{3}/
+      let nameRegexCheck = /^[a-zA-Z ]+$/;
+      let courseRegexCheck = /^([A-Z]{1}[a-z ]{1,15}) [0-9]{3}/
       let gradeRegexCheck = /^[0-9]{1,3}/;
 
+      let succesfulInput = $('<div>').addClass('glyphicon glyphicon-ok successfulInput').css('color','green');
+
       if ( nameRegexCheck.test(studentNameInput)) {
+            $('#studentName').css('background-color', 'lightgrey');
+            $('.goodInputName').append(succesfulInput);
           if(courseRegexCheck.test(studentCourseInput)) {
+            $('#course').css('background-color', 'lightgrey');
+            $('.goodInputCourse').append(succesfulInput);
             if(gradeRegexCheck.test(studentGradeInput)) {
+                  $('#studentGrade').css('background-color', 'lightgrey');
+                  $('.goodInputGrade').append(succesfulInput);
+                  if(event !== undefined) {
                   addStudentToServer(studentObject);
                   clearAddStudentFormInputs();
                   getStudentData();
                   $("#studentCourseError").text('');
                   $('#studentNameError').text('');
                   $("#studentGradeError").text('');
+                  }
             } else{
                   $("#studentCourseError").text('');
-                  $("#studentGradeError").text("Please enter a number between 1 and 100");
+                  $("#studentGradeError").text("Please enter a number between 0 and 100");
             }
           } else {
                   $('#studentNameError').text('');
@@ -112,6 +122,10 @@ function handleAddClicked( event ){
       } else{
             $('#studentNameError').text("Please enter a student name that only contains letters");
       }
+}
+
+function verifyInput(){
+
 }
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
@@ -169,9 +183,12 @@ function addStudentToServer(student_obj){
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
 function clearAddStudentFormInputs(){
-      $("#studentName").val("");
-      $("#course").val("");
-      $("#studentGrade").val("");
+      $("#studentName").val("").css('background-color','white');
+      $('.goodInputName').empty();
+      $("#course").val("").css('background-color','white');
+      $('.goodInputCourse').empty();
+      $("#studentGrade").val("").css('background-color','white');
+      $('.goodInputGrade').empty();
 }
 
 function editStudentFromServer (student_obj ) {
@@ -224,17 +241,24 @@ function deleteStudentFromServer (student_obj ) {
 function renderStudentOnDom(student_obj){
       var studentRow = $('<tr>');
       var studentNameDiv = $('<td>').text(student_obj.name);
-      var studentCourseDiv = $('<td>').text(student_obj.course_name)
-      var studentGradeDiv = $('<td>').text(student_obj.grade);
-      var operationTd = $('<td>');
-      var editButton = $('<button>').addClass('btn btn-warning').text("Edit");
+      studentNameDiv.on('click', ()=>{
+            studentReportCard(student_obj.name);
+      })
+      var studentCourseDiv = $('<td>').text(student_obj.course_name);
+      studentCourseDiv.on('click', ()=>{
+            courseReportCard(student_obj.course_name);
+      }) 
+      var studentGradeDiv = $('<td>').text(student_obj.grade).addClass('studentGrade');
+      var operationTd = $('<td>').addClass('operationContainer');
+      var editButton = $('<div>').addClass('glyphicon glyphicon-pencil editButton');
       editButton.on('click', ()=>{
             editStudent(student_obj);
             
       })
-      var deleteButton = $('<button>').addClass('btn btn-danger delete').text("Delete");
+      var deleteButton = $('<div>').addClass('glyphicon glyphicon-trash deleteButton');
       deleteButton.on('click', ()=>{
-            deleteStudentFromServer(student_obj);
+            deleteStudentCheck(student_obj);
+            // deleteStudentFromServer(student_obj);
       });
       operationTd.append(editButton,deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
@@ -288,10 +312,13 @@ function editStudent(student_obj){
       $('.currentStudentCourse span').text(student_obj.course_name);
       $('.currentStudentGrade span').text(student_obj.grade);
       $('#studentIdNumber').text(student_obj.id);
+      $('#editStudentButton').on('click', closeModal);
 }
 
 function closeModal(){
       $('#blackOut').removeClass('show');
+      $('.blackOut2').removeClass('show');
+      $('.blackOut3').removeClass('show');
 }
 
 function addEditedStudent(){
@@ -327,3 +354,48 @@ function showLogin(){
       $("#login").addClass('show');
 
 }
+
+function deleteStudentCheck(student_obj){
+      $('.blackOut2').addClass('show');
+      $('#deleteName').text(`Student Name :  ${student_obj.name}`);
+      $('#deleteCourse').text(`Course Name :  ${student_obj.course_name}`);
+      $('#deleteGrade').text(`Grade :  ${student_obj.grade}`);
+      $('#cancelDelete').on('click', closeModal )
+      $('#confirmDelete').on('click', ()=> {deleteStudentFromServer(student_obj)});
+      $('#confirmDelete').on('click', closeModal )
+}
+
+function studentReportCard(name){
+      $('.blackOut3').addClass('show');
+      $('.rc-studentName').text(name);
+      
+}
+
+{/* <div class ="editModal container col-xs-8 col-xs-offset-2">
+<button class="btn btn-danger" id="closeModal" >X</button>
+<form class="col-xs-offset-1 col-xs-10" onsubmit='addEditedStudent()'>
+<div class = "form-group">
+    <label class="currentStudentName">Current Student Name: <span></span></label>
+    <input type = "text" class = "form-control" id= "editStudentName" placeholder= "New Student Name" />
+</div>
+<div class = "form-group">
+    <label class="currentStudentCourse">Current Student Course: <span></span></label>
+    <input type = "text" class = "form-control" id= "editStudentCourse" placeholder= "New Course Name" />
+</div>
+<div class = "form-group">
+    <label class ="currentStudentGrade">Current Student Grade: <span></span></label>
+    <input type = "text" class = "form-control" id= "editStudentGrade" placeholder= "New Grade" />
+</div>
+<button type = "button" class = "btn btn-danger">Clear</button>
+<button type = "submit" class = "btn btn-success" id="editStudentButton" >Submit Changes</button>
+<p id="studentIdNumber"></p>
+</form>
+</div> */}
+
+// function launchEditModal(){
+//       let editModal = $("<div>").addClass("editModal container col-xs-8 col-xs-offset-2");
+//       let closeButton = $("<button>").addClass("btn btn-danger").attr("id","closeModal").text("X");
+//       let editForm = $("<form>").addClass("col-xs-offset-1 col-xs-10").attr("onsubmit","addEditedStudent()");
+//       let formGroup1 = $("<div>").addClass("form-group");
+//       let fg1_label = $("<label>").addClass("currentStudentName").text()
+// }
