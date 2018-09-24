@@ -37,6 +37,10 @@
 cursor: pointer;
 }
 
+.student-list-container{
+    height:60vh;
+    overflow:scroll;
+}
 /* .studentGrade{
     padding-left:7% !important;
 } */
@@ -69,6 +73,14 @@ cursor: pointer;
     display: none;
     padding:0;
 }
+.deleteCheck{
+    width:40%;
+}
+.studentReportCard{
+    height:45%;
+    width:60%;
+}
+
 .panel-heading{
     margin:0 !important;
     text-align: center !important;
@@ -89,8 +101,8 @@ cursor: pointer;
 
 #closeModal{
     position: absolute;
-    top:2%;
-    right:2%;
+    top:1%;
+    right:1%;
 }
 
 .show{
@@ -123,4 +135,21 @@ cursor: pointer;
     left:0;
     height: 100%;
     z-index: 2;
+}
+
+.rc-studentName, .rc-studentGradeAvg, .rc-gpa{
+    display:inline-block;
+    margin: 2% 8%;
+}
+#academicProbationWarning {
+    margin: 0% 8%;
+}
+
+.class-list{
+    width:75%;
+    margin-left:7%;
+}
+
+#tableDataGoesHere > tr > td:nth-child(1):hover{
+cursor: pointer;
 }
