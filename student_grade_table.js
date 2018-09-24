@@ -45,9 +45,17 @@ function addClickHandlersToElements(){
       $(".add").on("click", handleAddClicked);
       $(".cancel").on("click", handleCancelClick);
       $(".getData").on("click", getStudentData); 
-      // $("#blackOut").on("click", closeModal);
+      $("#blackOut").on("click", closeModal);
       $("#closeModal").on("click", closeModal);
-      
+      $('.editModal').on("click",function(){
+            event.stopPropagation();
+      });
+      $('.deleteCheck').on("click",function(){
+            event.stopPropagation();
+      });
+      $('.studetReportCard').on("click",function(){
+            event.stopPropagation();
+      })
 }
 
 
@@ -63,13 +71,43 @@ function getStudentData(){
 }
 
 function fillStudentTable( response ){
+      console.log(response);
       student_array = response.data;
       $('tbody').empty();
       updateStudentList( student_array );
 }
 
+function getStudentCourseList(studentName){
+      let studentData = {
+            datatype: "json",
+            url: "php_SGTserver/data.php",
+            method: 'GET',
+            data: {action:'readOne',
+            name: studentName,
+            },
+            success: populateReportCard,
+      }
+      $.ajax(studentData);
+}
 
+function populateReportCard(response){
+      let dataObject = JSON.parse(response);
+      console.log("THIS IS THE RESPONSE!!!!", dataObject);
+      let classList = dataObject.data;
+      console.log("This classList ", classList);
+      for(let index = 0; index< classList.length; index++){
+            let studentReportCard = $('<tr>');
+            let studentCourseDiv = $('<td>').text(classList[index].course_name);
+            // studentCourseDiv.on('click', ()=>{
+            //       courseReportCard(student_obj.course_name);
+            // }) 
+            let studentGradeDiv = $('<td>').text(classList[index].grade).addClass('studentGrade');
+            studentReportCard.append(studentCourseDiv, studentGradeDiv);
+            $("#courseList").append( studentReportCard);
+      }
+      $('.rc-studentGradeAvg span').append(calculateGradeAverage(classList));
 
+}
 /***************************************************************************************************
  * handleAddClicked - Event Handler when user clicks the add button
  * @param {object} event  The event object from the click
@@ -124,9 +162,6 @@ function handleAddClicked( event ){
       }
 }
 
-function verifyInput(){
-
-}
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
  * @param: {undefined} none
@@ -265,6 +300,17 @@ function renderStudentOnDom(student_obj){
       $("#tableDataGoesHere").append( studentRow);
 }
 
+function renderReportCard(){
+      var studentReportCard = $('<tr>');
+      var studentCourseDiv = $('<td>').text(student_obj.course_name);
+      // studentCourseDiv.on('click', ()=>{
+      //       courseReportCard(student_obj.course_name);
+      // }) 
+      var studentGradeDiv = $('<td>').text(student_obj.grade).addClass('studentGrade');
+      studentRow.append(studentCourseDiv, studentGradeDiv);
+      $(".courseList").append( studentReportCard);
+}
+
 /***************************************************************************************************
  * updateStudentList - centralized function to update the average and call student list update
  * @param students {array} the array of student objects
@@ -307,7 +353,10 @@ function renderGradeAverage( number ){
 
 
 function editStudent(student_obj){
+      event.preventDefault();
+
       $("#blackOut").addClass('show');
+      $(".editModal").addClass('show');
       $('.currentStudentName span').text(student_obj.name);
       $('.currentStudentCourse span').text(student_obj.course_name);
       $('.currentStudentGrade span').text(student_obj.grade);
@@ -315,14 +364,17 @@ function editStudent(student_obj){
       $('#editStudentButton').on('click', closeModal);
 }
 
-function closeModal(){
+function closeModal(event){
+      
+      console.log("This Event",event);
       $('#blackOut').removeClass('show');
-      $('.blackOut2').removeClass('show');
-      $('.blackOut3').removeClass('show');
+      $('.editModal').removeClass('show');
+      $('.deleteCheck').removeClass('show');
+      $('.studentReportCard').removeClass('show');
 }
 
 function addEditedStudent(){
-      event.preventDefault();
+      // event.preventDefault();
       let newStudentName = $("#editStudentName").val();
       if(newStudentName === ""){
             newStudentName = $('.currentStudentName span').text();
@@ -346,17 +398,16 @@ function addEditedStudent(){
             id: studentId
       }
       
-      editStudentFromServer(editedStudent_obj);
-      
+      editStudentFromServer(editedStudent_obj);      
 }
 
 function showLogin(){
       $("#login").addClass('show');
-
 }
 
 function deleteStudentCheck(student_obj){
-      $('.blackOut2').addClass('show');
+      $('.deleteCheck').addClass('show');
+      $('#blackOut').addClass('show');
       $('#deleteName').text(`Student Name :  ${student_obj.name}`);
       $('#deleteCourse').text(`Course Name :  ${student_obj.course_name}`);
       $('#deleteGrade').text(`Grade :  ${student_obj.grade}`);
@@ -366,36 +417,9 @@ function deleteStudentCheck(student_obj){
 }
 
 function studentReportCard(name){
-      $('.blackOut3').addClass('show');
-      $('.rc-studentName').text(name);
-      
+      $('#blackOut').addClass('show');
+      $('.studentReportCard').addClass('show');
+      $('.rc-studentName span').text(`${name}`);   
+      getStudentCourseList(name);  
 }
 
-{/* <div class ="editModal container col-xs-8 col-xs-offset-2">
-<button class="btn btn-danger" id="closeModal" >X</button>
-<form class="col-xs-offset-1 col-xs-10" onsubmit='addEditedStudent()'>
-<div class = "form-group">
-    <label class="currentStudentName">Current Student Name: <span></span></label>
-    <input type = "text" class = "form-control" id= "editStudentName" placeholder= "New Student Name" />
-</div>
-<div class = "form-group">
-    <label class="currentStudentCourse">Current Student Course: <span></span></label>
-    <input type = "text" class = "form-control" id= "editStudentCourse" placeholder= "New Course Name" />
-</div>
-<div class = "form-group">
-    <label class ="currentStudentGrade">Current Student Grade: <span></span></label>
-    <input type = "text" class = "form-control" id= "editStudentGrade" placeholder= "New Grade" />
-</div>
-<button type = "button" class = "btn btn-danger">Clear</button>
-<button type = "submit" class = "btn btn-success" id="editStudentButton" >Submit Changes</button>
-<p id="studentIdNumber"></p>
-</form>
-</div> */}
-
-// function launchEditModal(){
-//       let editModal = $("<div>").addClass("editModal container col-xs-8 col-xs-offset-2");
-//       let closeButton = $("<button>").addClass("btn btn-danger").attr("id","closeModal").text("X");
-//       let editForm = $("<form>").addClass("col-xs-offset-1 col-xs-10").attr("onsubmit","addEditedStudent()");
-//       let formGroup1 = $("<div>").addClass("form-group");
-//       let fg1_label = $("<label>").addClass("currentStudentName").text()
-// }

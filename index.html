@@ -72,9 +72,15 @@
     </div>
 </div>
 <div class="col-xs-12" id="blackOut">
-    <div class ="editModal container col-xs-8 col-xs-offset-2">
+    <div class ="editModal container col-xs-10 col-xs-offset-1 col-md-offset-3 col-md-6 panel panel-warning">
+        <div class="panel-heading">
             <button class="btn btn-danger" id="closeModal" >X</button>
-        <form class="col-xs-offset-1 col-xs-10" onsubmit='addEditedStudent()'>
+            <div class="panel-title">
+            <h3>Please enter the new name, course, and/or grade</h3>
+            <h5>Any categories left empty will retain their previous values</h5>
+            </div>
+            </div>
+        <form class="col-xs-offset-1 col-xs-10 panel-body" onsubmit='addEditedStudent()'>
             <div class = "form-group">
                 <label class="currentStudentName">Current Student Name: <span></span></label>
                 <input type = "text" class = "form-control" id= "editStudentName" placeholder= "New Student Name" />
@@ -88,10 +94,48 @@
                 <input type = "text" class = "form-control" id= "editStudentGrade" placeholder= "New Grade" />
             </div>
             <button type = "button" class = "btn btn-danger">Clear</button>
+            <button type="button" class="btn btn-warning" onclick="closeModal()">Cancel</button>
             <button type = "submit" class = "btn btn-success" id="editStudentButton" >Submit Changes</button>
             <p id="studentIdNumber"></p>
         </form>
     </div>
+        
+    <div class="deleteCheck panel panel-danger col-xs-10 col-md-4">
+        <div class="panel-heading">
+            <h4 class="panel-title">Are you sure you would like to delete the following listing?</h4>
+        </div>
+        <button class="btn btn-danger" id="closeModal" onclick="closeModal()">X</button>
+        <div class="deleteInfo">
+            <div id = 'deleteName'></div>
+            <div id = 'deleteCourse'></div>
+            <div id ='deleteGrade'></div>
+            <button class = 'btn btn-warning' id="cancelDelete">Cancel</button>
+            <button class = 'btn btn-danger' id="confirmDelete">Delete Listing</button>
+        </div>
+    </div>
+        <div class="studentReportCard panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Report Card</h3>
+            </div>
+            <button class="btn btn-danger" id="closeModal" onclick="closeModal()">X</button>
+            <div class='rc-studentName'><b>Student Name:</b> <span></span></div>
+            <div class="rc-studentGradeAvg"><b>Grade Avg:</b> <span></span></div>
+            <div class="rc-gpa"><b>Current GPA: </b> <span></span></div>
+            <table class="class-list table col-sm-9">
+                    <thead>
+                    <tr>
+                        <th>Student Course</th>
+                        <th>Student Grade</th>
+                    </tr>
+                    </thead>
+                    <tbody id ="courseList" >
+                    </tbody>
+                </table>
+            
+            
+            <div id="gpa"></div>
+        </div>
+
 </div>
 <div class ="col-xs-12" id="login">
     <div class ="container">
@@ -129,27 +173,7 @@
     </div>
 
 </div>
-<div class="blackOut2">
-        <button class="btn btn-danger" id="closeModal" onclick="closeModal()">X</button>
-    <div class="deleteCheck">
-        <div id = 'deleteName'></div>
-        <div id = 'deleteCourse'></div>
-        <div id ='deleteGrade'></div>
-        <button class = 'btn btn-warning' id="cancelDelete">Cancel</button>
-        <button class = 'btn btn-danger' id="confirmDelete">Delete Listing</button>
-    </div>
-</div>
-<div class="blackOut3">
-        <button class="btn btn-danger" id="closeModal" onclick="closeModal()">X</button>
-    <div class="studentReportCard">
-        <div class='rc-studentName'></div>
-        <ul class="courseList">
 
-        </ul>
-        <div class="rc-studentGradeAvg"></div>
-        <div id="gpa"></div>
-    </div>
-</div>
 </body>
 </html>
 

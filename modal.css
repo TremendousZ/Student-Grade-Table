@@ -2,7 +2,7 @@
 
 }
 
-#blackOut,.blackOut2,.blackOut3{
+#blackOut{
     display: none;
     background-color: rgba(0,0,0,.4);
     position: absolute;
@@ -18,8 +18,12 @@
     top: 25%;
     z-index: 3;
     border-radius: 1%;
+    display: none;
+    padding:0;
 }
-
+.editModal h3, .editModal h5{
+    text-align: center;
+}
 
 .editButton{
     margin-right: 5%;
@@ -61,25 +65,24 @@ cursor: pointer;
     left:50%;
     transform:translate(-50%,-50%);
     z-index: 3;
-    height: 29%;
-    width:30%;
     border-radius: 1%;
+    display: none;
+    padding:0;
+}
+.panel-heading{
+    margin:0 !important;
+    text-align: center !important;
 }
 .deleteCheck > div{
     margin: 5%;
 }
 
-#cancelDelete{
-    position: absolute;
-    right:38%;
+.deleteInfo{
+    text-align: center;
 }
-
-#confirmDelete{
-    position: absolute;
-    right:5%;
+.deleteInfo button {
+    margin-top:5%;
 }
-
-
 .editModal > form{
     padding: 5% 2%;
 }
