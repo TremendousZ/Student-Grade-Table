@@ -53,9 +53,10 @@ function addClickHandlersToElements(){
       $('.deleteCheck').on("click",function(){
             event.stopPropagation();
       });
-      $('.studetReportCard').on("click",function(){
+      $('.studentReportCard').on("click",function(){
             event.stopPropagation();
-      })
+      });
+      
 }
 
 
@@ -71,7 +72,6 @@ function getStudentData(){
 }
 
 function fillStudentTable( response ){
-      console.log(response);
       student_array = response.data;
       $('tbody').empty();
       updateStudentList( student_array );
@@ -92,9 +92,7 @@ function getStudentCourseList(studentName){
 
 function populateReportCard(response){
       let dataObject = JSON.parse(response);
-      console.log("THIS IS THE RESPONSE!!!!", dataObject);
       let classList = dataObject.data;
-      console.log("This classList ", classList);
       for(let index = 0; index< classList.length; index++){
             let studentReportCard = $('<tr>');
             let studentCourseDiv = $('<td>').text(classList[index].course_name);
@@ -106,6 +104,7 @@ function populateReportCard(response){
             $("#courseList").append( studentReportCard);
       }
       $('.rc-studentGradeAvg span').append(calculateGradeAverage(classList));
+      $('.rc-gpa span').append(calculateGPA(classList));
 
 }
 /***************************************************************************************************
@@ -115,7 +114,6 @@ function populateReportCard(response){
        none
  */
 function handleAddClicked( event ){
-      console.log("This Event", event);
       $("#studentGradeError").text('');
       let studentNameInput = $('#studentName').val();
       let studentCourseInput = $("#course").val();
@@ -243,9 +241,7 @@ function editStudentFromServer (student_obj ) {
             },
             error: function(response){
                   console.log(response);
-            }
-            
-            
+            }      
       }
       $.ajax(studentToEdit);  
 }
@@ -287,13 +283,11 @@ function renderStudentOnDom(student_obj){
       var operationTd = $('<td>').addClass('operationContainer');
       var editButton = $('<div>').addClass('glyphicon glyphicon-pencil editButton');
       editButton.on('click', ()=>{
-            editStudent(student_obj);
-            
+            editStudent(student_obj);     
       })
       var deleteButton = $('<div>').addClass('glyphicon glyphicon-trash deleteButton');
       deleteButton.on('click', ()=>{
             deleteStudentCheck(student_obj);
-            // deleteStudentFromServer(student_obj);
       });
       operationTd.append(editButton,deleteButton);
       studentRow.append( studentNameDiv, studentCourseDiv, studentGradeDiv, operationTd);
@@ -303,9 +297,6 @@ function renderStudentOnDom(student_obj){
 function renderReportCard(){
       var studentReportCard = $('<tr>');
       var studentCourseDiv = $('<td>').text(student_obj.course_name);
-      // studentCourseDiv.on('click', ()=>{
-      //       courseReportCard(student_obj.course_name);
-      // }) 
       var studentGradeDiv = $('<td>').text(student_obj.grade).addClass('studentGrade');
       studentRow.append(studentCourseDiv, studentGradeDiv);
       $(".courseList").append( studentReportCard);
@@ -318,7 +309,6 @@ function renderReportCard(){
  * @calls renderStudentOnDom, calculateGradeAverage, renderGradeAverage
  */
 function updateStudentList(array){
-      console.log('student Array:', array );
       for (var index = 0; index < array.length; index++) {
       renderStudentOnDom(array[index]);
       renderGradeAverage(calculateGradeAverage(array));
@@ -339,7 +329,42 @@ function calculateGradeAverage( array ){
       return gradeAverage;
 }
 
-
+function calculateGPA(array){
+      let gpaArray = [];
+      for(var index = 0; index < array.length; index++) {
+            let currentGrade = parseInt(array[index].grade);
+            if( currentGrade > 93){
+                  gpaArray.push(4.00);
+            } else if(currentGrade > 89 && currentGrade < 94){
+                  gpaArray.push(3.70);
+            } else if(currentGrade > 86 && currentGrade < 90){
+                  gpaArray.push(3.33);
+            } else if(currentGrade > 82 && currentGrade < 87){
+                  gpaArray.push(3.00);
+            } else if(currentGrade > 79 && currentGrade < 83){
+                  gpaArray.push(2.70);
+            } else if(currentGrade > 76 && currentGrade < 80){
+                  gpaArray.push(2.30);
+            } else if(currentGrade > 72 && currentGrade < 77){
+                  gpaArray.push(2.00);
+            } else if(currentGrade > 69 && currentGrade < 73){
+                  gpaArray.push(1.70);
+            } else if(currentGrade > 66 && currentGrade < 70){
+                  gpaArray.push(1.30);
+            } else if(currentGrade > 62 && currentGrade < 67){
+                  gpaArray.push(1.00);
+            } else if(currentGrade > 59 && currentGrade < 63){
+                  gpaArray.push(0.70);
+            } else if(currentGrade <= 59){
+                  gpaArray.push(0.00);
+            }
+      }
+      let currentGPA = ((gpaArray.reduce((a,b)=>a + b))/gpaArray.length).toFixed(2)
+      if(currentGPA < 2.00){
+            $('#academicProbationWarning').text("Warning: Your GPA needs to be higher than a 2.00 to avoid academic probation.").css('color', 'red');
+      }
+      return currentGPA;
+      }
 
 /***************************************************************************************************
  * renderGradeAverage - updates the on-page grade average
@@ -350,11 +375,8 @@ function renderGradeAverage( number ){
       $('.avgGrade').text( number );
 };
 
-
-
 function editStudent(student_obj){
       event.preventDefault();
-
       $("#blackOut").addClass('show');
       $(".editModal").addClass('show');
       $('.currentStudentName span').text(student_obj.name);
@@ -365,12 +387,15 @@ function editStudent(student_obj){
 }
 
 function closeModal(event){
-      
-      console.log("This Event",event);
       $('#blackOut').removeClass('show');
       $('.editModal').removeClass('show');
       $('.deleteCheck').removeClass('show');
       $('.studentReportCard').removeClass('show');
+      $('#courseList').empty();
+      $('.rc-studentName span').text('');
+      $('.rc-studentGradeAvg span').text('');
+      $('.rc-gpa span').text('');
+      $('#academicProbationWarning').text('');
 }
 
 function addEditedStudent(){
@@ -389,15 +414,13 @@ function addEditedStudent(){
       }  
 
       let studentId = $("#studentIdNumber").text();
-
-      
+   
       var editedStudent_obj = {
             name: newStudentName,
             course: newStudentCourse,
             grade: newStudentGrade,
             id: studentId
       }
-      
       editStudentFromServer(editedStudent_obj);      
 }
 
@@ -405,16 +428,31 @@ function showLogin(){
       $("#login").addClass('show');
 }
 
+// Show modal to confirm if the listing should be deleted
+
 function deleteStudentCheck(student_obj){
       $('.deleteCheck').addClass('show');
       $('#blackOut').addClass('show');
       $('#deleteName').text(`Student Name :  ${student_obj.name}`);
       $('#deleteCourse').text(`Course Name :  ${student_obj.course_name}`);
       $('#deleteGrade').text(`Grade :  ${student_obj.grade}`);
-      $('#cancelDelete').on('click', closeModal )
+      $('#cancelDelete').on('click', ()=>{
+            closeModal();
+            student_obj='';
+      } );
+      $('#blackOut').on('click', ()=>{
+            closeModal();
+            student_obj='';
+      } );
+      $('#cancelDelete').on('click', ()=>{
+            closeModal();
+            student_obj='';
+      } )
       $('#confirmDelete').on('click', ()=> {deleteStudentFromServer(student_obj)});
       $('#confirmDelete').on('click', closeModal )
 }
+
+// Show the report card, get the grade average, and get the GPA
 
 function studentReportCard(name){
       $('#blackOut').addClass('show');
