@@ -101,7 +101,7 @@
             </div>
             <button type = "button" class = "btn btn-danger" id="clearEditInputs">Clear</button>
             <button type="button" class="btn btn-warning" onclick="closeModal()">Cancel</button>
-            <button type = "submit" class = "btn btn-success" id="editStudentButton" >Submit Changes</button>
+            <button type = "submit" class = "btn btn-success" id="editStudentButton">Submit Changes</button>
             <p id="studentIdNumber"></p>
         </form>
     </div>
@@ -142,7 +142,28 @@
             
             <div id="gpa"></div>
         </div>
-
+        <div class="courseReport panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title"> Course Report Card</h3>
+            </div>
+            <button class="btn btn-danger" id="closeModal" onclick="closeModal()">X</button>
+            <div class='cr-courseName'><b>Course Name:</b> <span></span></div>
+            <div class="cr-courseGradeAvg"><b>Grade Avg:</b> <span></span></div>
+            
+            <div id="classWarning"></div>
+            <div class="classListContainer">
+            <table class="class-list table col-sm-4">
+                    <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Student Grade</th>
+                    </tr>
+                    </thead>
+                    <tbody id ="studentList">
+                    </tbody>
+                </table>
+                </div>  
+        </div>
 </div>
 <div class ="col-xs-12" id="login">
     <div class ="container">
