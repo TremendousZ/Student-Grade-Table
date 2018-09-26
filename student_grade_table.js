@@ -47,6 +47,7 @@ function addClickHandlersToElements(){
       $(".getData").on("click", getStudentData); 
       $("#blackOut").on("click", closeModal);
       $("#closeModal").on("click", closeModal);
+      $('#clearEditInputs').on('click', clearInputs);
       $('.editModal').on("click",function(){
             event.stopPropagation();
       });
@@ -107,6 +108,22 @@ function populateReportCard(response){
       $('.rc-gpa span').append(calculateGPA(classList));
 
 }
+
+function getCourseReport(courseName){
+      let studentData = {
+            datatype: "json",
+            url: "php_SGTserver/data.php",
+            method: 'GET',
+            data: {
+                  action:'readOne',
+                  course: courseName,
+            },
+            success: populateReportCard,
+      }
+      $.ajax(studentData);
+}
+
+
 /***************************************************************************************************
  * handleAddClicked - Event Handler when user clicks the add button
  * @param {object} event  The event object from the click
@@ -159,6 +176,8 @@ function handleAddClicked( event ){
             $('#studentNameError').text("Please enter a student name that only contains letters");
       }
 }
+
+
 
 /***************************************************************************************************
  * handleCancelClicked - Event Handler when user clicks the cancel button, should clear out student form
@@ -396,6 +415,7 @@ function closeModal(event){
       $('.rc-studentGradeAvg span').text('');
       $('.rc-gpa span').text('');
       $('#academicProbationWarning').text('');
+      clearInputs();
 }
 
 function addEditedStudent(){
@@ -414,7 +434,10 @@ function addEditedStudent(){
       }  
 
       let studentId = $("#studentIdNumber").text();
-   
+
+
+
+
       var editedStudent_obj = {
             name: newStudentName,
             course: newStudentCourse,
@@ -448,8 +471,8 @@ function deleteStudentCheck(student_obj){
             closeModal();
             student_obj='';
       } )
-      $('#confirmDelete').on('click', ()=> {deleteStudentFromServer(student_obj)});
-      $('#confirmDelete').on('click', closeModal )
+      $('#confirmDelete').on('click', ()=> {deleteStudentFromServer(student_obj); closeModal});
+      
 }
 
 // Show the report card, get the grade average, and get the GPA
@@ -461,3 +484,59 @@ function studentReportCard(name){
       getStudentCourseList(name);  
 }
 
+function checkNameInput(){
+      let succesfulInput = $('<div>').addClass('glyphicon glyphicon-ok successfulEditInput').css('color','green');
+      let nameRegexCheck = /^[a-zA-Z ]+$/;
+      let editStudentInput = $('#editStudentName').val();
+
+      if(nameRegexCheck.test(editStudentInput)){
+            $('#editStudentName').css('background-color', 'lightgrey');
+            $('.goodEditName').append(succesfulInput);
+            $('#editStudentName').removeClass('error');
+            $('.editNameError').text("");
+      } else {
+            $('.editNameError').text("Please enter a student name that only contains letters");
+            $('#editStudentName').addClass('error');
+      }
+}
+
+function checkCourseInput(){
+      let succesfulInput = $('<div>').addClass('glyphicon glyphicon-ok successfulCourseInput').css('color','green');
+      let courseRegexCheck = /^([A-Z]{1}[a-z ]{1,15}) [0-9]{3}/
+      let editCourseInput = $('#editStudentCourse').val();
+
+      if(courseRegexCheck.test(editCourseInput)){
+            $('#editStudentCourse').css('background-color', 'lightgrey');
+            $('.goodEditCourse').append(succesfulInput);
+            $('#editStudentCourse').removeClass('error');
+            $('.editCourseError').text('')
+      } else {
+            $('.editCourseError').text("Please enter a Course Name with a capital first letter and a space before the course number. Ex: Math 415");
+            $('#editStudentCourse').addClass('error');
+      }
+}
+
+function checkGradeInput(){
+      let succesfulInput = $('<div>').addClass('glyphicon glyphicon-ok successfulGradeInput').css('color','green');
+      let gradeRegexCheck = /^[0-9]{1,3}/;
+      let editGradeInput = $('#editStudentGrade').val();
+
+      if(gradeRegexCheck.test(editGradeInput)){
+            $('#editStudentGrade').css('background-color', 'lightgrey');
+            $('.goodEditGrade').append(succesfulInput);
+            $('#editStudentGrade').removeClass('error');
+            $('.editGradeError').text('')
+      } else {
+            $('.editGradeError').text("Please enter a number between 0 and 100");
+            $('#editStudentGrade').addClass('error');
+      }
+}
+
+function clearInputs(){
+      $('#editStudentName').val('').css('background-color', 'white');
+      $('#editStudentCourse').val('').css('background-color', 'white');
+      $('#editStudentGrade').val('').css('background-color', 'white');
+      $('.goodEditName').empty();
+      $('.goodEditCourse').empty();
+      $('.goodEditGrade').empty();
+}

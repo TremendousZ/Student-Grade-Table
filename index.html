@@ -83,17 +83,23 @@
         <form class="col-xs-offset-1 col-xs-10 panel-body" onsubmit='addEditedStudent()'>
             <div class = "form-group">
                 <label class="currentStudentName">Current Student Name: <span></span></label>
-                <input type = "text" class = "form-control" id= "editStudentName" placeholder= "New Student Name" />
+                <div class="editNameError"></div>
+                <input type = "text" class = "form-control" id= "editStudentName" placeholder= "New Student Name" onchange="checkNameInput()"/>
+                <div class="goodEditName"></div>
             </div>
             <div class = "form-group">
                 <label class="currentStudentCourse">Current Student Course: <span></span></label>
-                <input type = "text" class = "form-control" id= "editStudentCourse" placeholder= "New Course Name" />
+                <div class="editCourseError"></div>
+                <input type = "text" class = "form-control" id= "editStudentCourse" placeholder= "New Course Name" onchange="checkCourseInput()"/>
+                <div class="goodEditCourse"></div>
             </div>
             <div class = "form-group">
                 <label class ="currentStudentGrade">Current Student Grade: <span></span></label>
-                <input type = "text" class = "form-control" id= "editStudentGrade" placeholder= "New Grade" />
+                <div class="editGradeError"></div>
+                <input type = "text" class = "form-control" id= "editStudentGrade" placeholder= "New Grade" onchange="checkGradeInput()" />
+                <div class="goodEditGrade"></div>
             </div>
-            <button type = "button" class = "btn btn-danger">Clear</button>
+            <button type = "button" class = "btn btn-danger" id="clearEditInputs">Clear</button>
             <button type="button" class="btn btn-warning" onclick="closeModal()">Cancel</button>
             <button type = "submit" class = "btn btn-success" id="editStudentButton" >Submit Changes</button>
             <p id="studentIdNumber"></p>

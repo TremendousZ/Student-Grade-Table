@@ -59,6 +59,26 @@ cursor: pointer;
     right: 2%;
     top: 25%;
 }
+
+.successfulEditInput{
+    position: absolute;
+    z-index: 5;
+    right: 4%;
+    top: 21%;
+}
+
+.successfulCourseInput{
+    position: absolute;
+    top: 44%;
+    right: 4%;
+    z-index:5;
+}
+
+.successfulGradeInput{
+    position: absolute;
+    top: 67%;
+    right: 4%;
+}
 #studentIdNumber {
     display: none;
 }
@@ -153,3 +173,9 @@ cursor: pointer;
 #tableDataGoesHere > tr > td:nth-child(1):hover{
 cursor: pointer;
 }
+
+.error{
+    border-color:red !important;
+}
+
+
