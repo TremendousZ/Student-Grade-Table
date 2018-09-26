@@ -38,7 +38,7 @@ cursor: pointer;
 }
 
 .student-list-container{
-    height:60vh;
+    height:58vh;
     overflow:scroll;
 }
 /* .studentGrade{
@@ -82,7 +82,7 @@ cursor: pointer;
 #studentIdNumber {
     display: none;
 }
-.deleteCheck,.studentReportCard{
+.deleteCheck,.studentReportCard, .courseReport{
     position: absolute;
     background-color: white;
     top: 50%;
@@ -96,7 +96,7 @@ cursor: pointer;
 .deleteCheck{
     width:40%;
 }
-.studentReportCard{
+.studentReportCard, .courseReport{
     height:45%;
     width:60%;
 }
@@ -159,20 +159,34 @@ cursor: pointer;
 
 .rc-studentName, .rc-studentGradeAvg, .rc-gpa{
     display:inline-block;
-    margin: 2% 8%;
+    margin: 2% 6.5%;
+}
+
+.cr-courseName, .cr-courseGradeAvg {
+    display: inline-block;
+    margin: 2% 7.3%;
 }
 #academicProbationWarning {
     margin: 0% 8%;
 }
 
 .class-list{
-    width:75%;
-    margin-left:7%;
+    width:72%;
+    
+    margin-left:6.5%;
+   
+}
+.classListContainer{
+    height:28vh;
+    overflow: scroll;
 }
 
 #tableDataGoesHere > tr > td:nth-child(1):hover{
 cursor: pointer;
 }
+#tableDataGoesHere > tr > td:nth-child(2):hover{
+    cursor: pointer;
+    }
 
 .error{
     border-color:red !important;

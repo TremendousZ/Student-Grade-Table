@@ -21,6 +21,9 @@ switch($_GET['action']){
 	case 'readOne':
 		include('dataApi/readOne.php');
 		break;
+	case 'oneClass':
+		include('dataApi/oneClass.php');
+		break;
 	case 'insert':
 		//include the php file insert.php
 		include( "dataApi/insert.php");

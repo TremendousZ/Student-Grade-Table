@@ -56,10 +56,11 @@ function addClickHandlersToElements(){
       });
       $('.studentReportCard').on("click",function(){
             event.stopPropagation();
-      });
-      
+      });    
+      $('.courseReport').on('click',()=>{
+            event.stopPropagation();
+      }) 
 }
-
 
 function getStudentData(){
       var studentData = {
@@ -106,7 +107,6 @@ function populateReportCard(response){
       }
       $('.rc-studentGradeAvg span').append(calculateGradeAverage(classList));
       $('.rc-gpa span').append(calculateGPA(classList));
-
 }
 
 function getCourseReport(courseName){
@@ -115,14 +115,27 @@ function getCourseReport(courseName){
             url: "php_SGTserver/data.php",
             method: 'GET',
             data: {
-                  action:'readOne',
+                  action:'oneClass',
                   course: courseName,
             },
-            success: populateReportCard,
+            success: populateCourseReportCard,
       }
       $.ajax(studentData);
 }
 
+function populateCourseReportCard(response){
+      console.log("this response", response);
+      let dataObject = JSON.parse(response);
+      let studentList = dataObject.data;
+      for(let index = 0; index< studentList.length; index++){
+            let courseReportCard = $('<tr>');
+            let studentNameDiv = $('<td>').text(studentList[index].name);
+            let studentGradeDiv = $('<td>').text(studentList[index].grade).addClass('studentGrade');
+            courseReportCard.append(studentNameDiv, studentGradeDiv);
+            $("#studentList").append( courseReportCard);
+      }
+      $('.cr-courseGradeAvg span').append(calculateGradeAverage(studentList));
+}
 
 /***************************************************************************************************
  * handleAddClicked - Event Handler when user clicks the add button
@@ -143,7 +156,7 @@ function handleAddClicked( event ){
       }
       let nameRegexCheck = /^[a-zA-Z ]+$/;
       let courseRegexCheck = /^([A-Z]{1}[a-z ]{1,15}) [0-9]{3}/
-      let gradeRegexCheck = /^[0-9]{1,3}/;
+      let gradeRegexCheck = /(?:\b|-)([1-9]{1,2}[0]?|100)\b/g;
 
       let succesfulInput = $('<div>').addClass('glyphicon glyphicon-ok successfulInput').css('color','green');
 
@@ -244,6 +257,7 @@ function clearAddStudentFormInputs(){
 }
 
 function editStudentFromServer (student_obj ) {
+      debugger;
       studentToEdit = {
             dataType: "json",
             url: "php_SGTserver/data.php",
@@ -256,6 +270,7 @@ function editStudentFromServer (student_obj ) {
                   id: student_obj.id,
              },
             success: function(response) {
+                  console.log("This response",response);
                   getStudentData();
             },
             error: function(response){
@@ -321,6 +336,13 @@ function renderReportCard(){
       $(".courseList").append( studentReportCard);
 }
 
+function renderCourseReport(){
+      var courseReport = $('<tr>');
+      var studentNameDiv = $('<td>').text(student_obj.name);
+      var studentGradeDiv = $('<td>').text(student_obj.grade).addClass('studentGrade');
+      studentRow.append(studentNameDiv, studentGradeDiv);
+      $(".studentList").append(courseReport);
+}
 /***************************************************************************************************
  * updateStudentList - centralized function to update the average and call student list update
  * @param students {array} the array of student objects
@@ -402,7 +424,7 @@ function editStudent(student_obj){
       $('.currentStudentCourse span').text(student_obj.course_name);
       $('.currentStudentGrade span').text(student_obj.grade);
       $('#studentIdNumber').text(student_obj.id);
-      $('#editStudentButton').on('click', closeModal);
+      //$('#editStudentButton').on('click', closeModal);
 }
 
 function closeModal(event){
@@ -410,16 +432,22 @@ function closeModal(event){
       $('.editModal').removeClass('show');
       $('.deleteCheck').removeClass('show');
       $('.studentReportCard').removeClass('show');
+      $('.courseReport').removeClass('show');
       $('#courseList').empty();
       $('.rc-studentName span').text('');
       $('.rc-studentGradeAvg span').text('');
       $('.rc-gpa span').text('');
       $('#academicProbationWarning').text('');
+      $('.cr-courseName span').text('');
+      $('.cr-courseGradeAvg span').text('');
+      $('#studentList').empty();
       clearInputs();
 }
 
 function addEditedStudent(){
-      // event.preventDefault();
+      debugger;
+      console.log($("#editStudentName"));
+      event.preventDefault();
       let newStudentName = $("#editStudentName").val();
       if(newStudentName === ""){
             newStudentName = $('.currentStudentName span').text();
@@ -435,16 +463,16 @@ function addEditedStudent(){
 
       let studentId = $("#studentIdNumber").text();
 
-
-
-
       var editedStudent_obj = {
             name: newStudentName,
             course: newStudentCourse,
             grade: newStudentGrade,
             id: studentId
       }
-      editStudentFromServer(editedStudent_obj);      
+      
+      editStudentFromServer(editedStudent_obj);
+      closeModal();      
+      
 }
 
 function showLogin(){
@@ -518,7 +546,7 @@ function checkCourseInput(){
 
 function checkGradeInput(){
       let succesfulInput = $('<div>').addClass('glyphicon glyphicon-ok successfulGradeInput').css('color','green');
-      let gradeRegexCheck = /^[0-9]{1,3}/;
+      let gradeRegexCheck = /(?:\b|-)([1-9]{1,2}[0]?|100)\b/g;
       let editGradeInput = $('#editStudentGrade').val();
 
       if(gradeRegexCheck.test(editGradeInput)){
@@ -527,16 +555,26 @@ function checkGradeInput(){
             $('#editStudentGrade').removeClass('error');
             $('.editGradeError').text('')
       } else {
-            $('.editGradeError').text("Please enter a number between 0 and 100");
+            $('.editGradeError').text("Please enter a number between 1 and 100");
             $('#editStudentGrade').addClass('error');
       }
 }
 
 function clearInputs(){
-      $('#editStudentName').val('').css('background-color', 'white');
-      $('#editStudentCourse').val('').css('background-color', 'white');
-      $('#editStudentGrade').val('').css('background-color', 'white');
+      $('#editStudentName').val('').css('background-color', 'white').removeClass('error');
+      $('#editStudentCourse').val('').css('background-color', 'white').removeClass('error');
+      $('#editStudentGrade').val('').css('background-color', 'white').removeClass('error');
       $('.goodEditName').empty();
       $('.goodEditCourse').empty();
       $('.goodEditGrade').empty();
+      $('.editNameError').text('');
+      $('.editCourseError').text('');
+      $('.editGradeError').text('');
+}
+
+function courseReportCard(course){
+      $('#blackOut').addClass('show');
+      $('.courseReport').addClass('show');
+      $('.cr-courseName span').text(`${course}`);   
+      getCourseReport(course);  
 }
