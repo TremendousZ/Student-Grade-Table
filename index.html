@@ -10,9 +10,13 @@
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
 <body>
-<div class="container">
+<div class="container mainBody">
     <div class="row header">
         <img src="images/cppocto.png">
+        <div>
+            Welcome Mr Ferguson
+        </div>
+        <button class="btn" id="logOut">Log Out</button>
         <!-- only show this element when the isnt on mobile -->
         <h1 class ="hidden-xs">Teacher Portal
             <small class= "pull-right">Grade Average : <span class="avgGrade"></span></small>
@@ -138,8 +142,6 @@
                     <tbody id ="courseList">
                     </tbody>
                 </table>
-            
-            
             <div id="gpa"></div>
         </div>
         <div class="courseReport panel panel-success">
@@ -166,9 +168,19 @@
         </div>
 </div>
 <div class ="col-xs-12" id="login">
+    <div class="welcomeContainer">
+        <div class="welcomeHeader">
+            <h3>Welcome to the Cal Poly Student Portal</h3>  
+            <p>Please identify your relationship to the campus</p> 
+            <div class="idButtonContainer">
+                <button class="btn" id="userIsStudent">Student</button>
+                <button class="btn" id="userIsTeacher">Teacher</button>
+            </div>
+        </div>
+    </div>
     <div class ="container">
         <div class ="leftColumn">
-            <form class="col-xs-offset-1 col-xs-10" onsubmit="teacherLogIn()">
+            <form class="col-xs-offset-1 col-xs-10">
                 <div class = "form-group">
                     <label class="teacherUserName"> Teacher Login Id:<span></span></label>
                     <input type = "text" class = "form-control" id= "teacherLoginInfo" placeholder= "Enter Your Login ID" />
@@ -179,11 +191,11 @@
                 </div>
                 
                 <button type = "button" class = "btn btn-danger">Clear</button>
-                <button type = "submit" class = "btn btn-success">Login</button>
+                <button type = "button" class = "btn btn-success" id="teacherLogIn">Login</button>
             </form>
         </div>
         <div class ="rightColumn">
-            <form class="col-xs-offset-1 col-xs-10" onsubmit="studentLogIn()">
+            <form class="col-xs-offset-1 col-xs-10">
                 <div class = "form-group">
                     <label class="studentUserName"> Student Id:<span></span></label>
                     <input type = "text" class = "form-control" id= "studentLoginId" placeholder= "Enter your Student ID" />
@@ -192,9 +204,13 @@
                     <label class="studentPassword">Password:<span></span></label>
                     <input type = "password" class = "form-control" id= "studentPassword" placeholder= "Student Password" />
                 </div>
+                <div class = "form-group">
+                        <label class="studentPassword">Email:<span></span></label>
+                        <input type = "email" class = "form-control" id= "studentEmail" placeholder= "Please enter your email" />
+                </div>
                 
                 <button type = "button" class = "btn btn-danger">Clear</button>
-                <button type = "submit" class = "btn btn-success">Login</button>
+                <button type = "button" class = "btn btn-success" id="studentLogIn">Request Report Card</button>
             </form>
         </div>
 

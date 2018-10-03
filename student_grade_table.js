@@ -32,7 +32,7 @@ function initializeApp(){
       addClickHandlersToElements();
       clearAddStudentFormInputs();
       getStudentData();
-      // showLogin();
+      showLogin();
 }
 
 /***************************************************************************************************
@@ -60,6 +60,11 @@ function addClickHandlersToElements(){
       $('.courseReport').on('click',()=>{
             event.stopPropagation();
       }) 
+      $("#userIsStudent").on('click', studentPortal);
+      $("#userIsTeacher").on('click', teacherPortal);
+      $('#teacherLogIn').on('click',enterTeacherPortal);
+      $('#studentLogIn').on('click',enterStudentPortal);
+      $('#logOut').on('click',showLogin);
 }
 
 function getStudentData(){
@@ -476,7 +481,10 @@ function addEditedStudent(){
 }
 
 function showLogin(){
+      debugger;
       $("#login").addClass('show');
+      $(".welcomeHeader").addClass("visible").removeClass("hidden-fade");
+      
 }
 
 // Show modal to confirm if the listing should be deleted
@@ -577,4 +585,34 @@ function courseReportCard(course){
       $('.courseReport').addClass('show');
       $('.cr-courseName span').text(`${course}`);   
       getCourseReport(course);  
+}
+
+function studentPortal(){
+      $('.welcomeHeader').addClass('hidden-fade');
+      $('.rightColumn').addClass('visible').css('z-index',1);
+}
+
+function teacherPortal(){
+      $('.welcomeHeader').addClass('hidden-fade');
+      $('.leftColumn').addClass('visible').css('z-index',1);
+}
+
+function enterTeacherPortal(){
+      let userTeacherIdInput = $('#teacherLoginInfo').val();
+      let userTeacherPassword = $('#teacherPassword').val();
+
+      if(userTeacherIdInput === "rferguson" && userTeacherPassword === "cpp123"){
+            $('#login').removeClass('show');
+            $('.mainBody').addClass('visible'); 
+            $('.leftColumn').removeClass('visible').css('z-index',-1);  
+      } else{
+            let wrongPassword = $('<div>').text("Please Enter a Valid Log In Name and Password").css('color','red').addClass("passwordError");
+            $('.leftColumn').append(wrongPassword);
+            return;
+      }
+      
+}
+
+function enterStudentPortal(){
+
 }

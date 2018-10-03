@@ -130,12 +130,14 @@ cursor: pointer;
 }
 
 .rightColumn, .leftColumn{
-    display: inline-block;
     box-sizing: border-box;
     width:49%;
     position: absolute;
     top:25%;
+    opacity: 0;
+    z-index: -1;
 }
+
 
 .rightColumn{
     left:50%;
@@ -145,6 +147,40 @@ cursor: pointer;
 }
 .goodInput{
     display: inline-block;
+}
+.welcomeHeader {
+    position: absolute;
+    top:30%;
+    left:50%;
+    opacity: 0;
+    transform:translate(-50%,-50%);
+}
+
+.welcomeHeader p, .idButtonContainer{
+    text-align: center;
+}
+
+.idButtonContainer button {
+    background-color: #01426E;
+    color:white;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 #login{
@@ -156,6 +192,15 @@ cursor: pointer;
     height: 100%;
     z-index: 2;
 }
+
+.visible {
+    animation: fade-in 3s ease forwards;
+}
+
+.hidden-fade {
+    animation: fade-out 1s ease forwards;
+}  
+
 
 .rc-studentName, .rc-studentGradeAvg, .rc-gpa{
     display:inline-block;
@@ -192,4 +237,8 @@ cursor: pointer;
     border-color:red !important;
 }
 
-
+.passwordError{
+    position: absolute;
+    left: 105%;
+    width: 65%;
+}
