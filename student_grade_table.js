@@ -423,7 +423,7 @@ function renderGradeAverage( number ){
 
 function editStudent(student_obj){
       event.preventDefault();
-      $("#blackOut").addClass('show');
+      $("#blackOut").removeClass('hidden').addClass('visible');
       $(".editModal").addClass('show');
       $('.currentStudentName span').text(student_obj.name);
       $('.currentStudentCourse span').text(student_obj.course_name);
@@ -433,7 +433,7 @@ function editStudent(student_obj){
 }
 
 function closeModal(event){
-      $('#blackOut').removeClass('show');
+      $('#blackOut').addClass('hidden').removeClass('visible');
       $('.editModal').removeClass('show');
       $('.deleteCheck').removeClass('show');
       $('.studentReportCard').removeClass('show');
@@ -490,7 +490,7 @@ function showLogin(){
 
 function deleteStudentCheck(student_obj){
       $('.deleteCheck').addClass('show');
-      $('#blackOut').addClass('show');
+      $('#blackOut').removeClass('hidden').addClass('visible');
       $('#deleteName').text(`Student Name :  ${student_obj.name}`);
       $('#deleteCourse').text(`Course Name :  ${student_obj.course_name}`);
       $('#deleteGrade').text(`Grade :  ${student_obj.grade}`);
@@ -513,7 +513,7 @@ function deleteStudentCheck(student_obj){
 // Show the report card, get the grade average, and get the GPA
 
 function studentReportCard(name){
-      $('#blackOut').addClass('show');
+      $('#blackOut').removeClass('hidden').addClass('visible');
       $('.studentReportCard').addClass('show');
       $('.rc-studentName span').text(`${name}`);   
       getStudentCourseList(name);  
@@ -580,7 +580,7 @@ function clearInputs(){
 }
 
 function courseReportCard(course){
-      $('#blackOut').addClass('show');
+      $('#blackOut').removeClass('hidden').addClass('visible');
       $('.courseReport').addClass('show');
       $('.cr-courseName span').text(`${course}`);   
       getCourseReport(course);  
@@ -607,16 +607,16 @@ function enterTeacherPortal(){
       let userTeacherIdInput = $('#teacherLoginInfo').val();
       let userTeacherPassword = $('#teacherPassword').val();
 
-      if(userTeacherIdInput === "rferguson" && userTeacherPassword === "cpp123"){
+      // if(userTeacherIdInput === "rferguson" && userTeacherPassword === "cpp123"){
             $('#login').removeClass('show');
             $('.mainBody').addClass('visible'); 
             $('.leftColumn').removeClass('visible').addClass("hidden");
             $('.teacherLogo').removeClass('visible').addClass("hidden");  
-      } else{
-            let wrongPassword = $('<div>').text("Please Enter a Valid Log In Name and Password").css('color','red').addClass("passwordError");
-            $('.leftColumn').append(wrongPassword);
-            return;
-      }
+      // } else{
+            // let wrongPassword = $('<div>').text("Please Enter a Valid Log In Name and Password").css('color','red').addClass("passwordError");
+            // $('.leftColumn').append(wrongPassword);
+            // return;
+      // }
       
 }
 
