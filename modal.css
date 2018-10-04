@@ -10,7 +10,7 @@
     left:0;
     height: 100%;
     width: 100%;
-    z-index: 2;
+    z-index: 4;
 }
 
 .editModal{
@@ -138,9 +138,9 @@ cursor: pointer;
     z-index: -1;
 }
 
-
 .rightColumn{
     left:50%;
+    border-left: 1px solid grey; 
 }
 .leftColumn{
     border-right: 1px solid grey; 

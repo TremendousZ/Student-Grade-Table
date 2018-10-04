@@ -170,16 +170,16 @@
 <div class ="col-xs-12" id="login">
     <div class="welcomeContainer">
         <div class="welcomeHeader">
-            <h3>Welcome to the Cal Poly Student Portal</h3>  
+            <h3>Welcome to the Cal Poly Portal</h3>  
             <p>Please identify your relationship to the campus</p> 
             <div class="idButtonContainer">
-                <button class="btn" id="userIsStudent">Student</button>
                 <button class="btn" id="userIsTeacher">Teacher</button>
+                <button class="btn" id="userIsStudent">Student</button>
             </div>
         </div>
     </div>
     <div class ="container">
-        <div class ="leftColumn">
+        <div class ="leftColumn hidden">
             <form class="col-xs-offset-1 col-xs-10">
                 <div class = "form-group">
                     <label class="teacherUserName"> Teacher Login Id:<span></span></label>
@@ -194,15 +194,11 @@
                 <button type = "button" class = "btn btn-success" id="teacherLogIn">Login</button>
             </form>
         </div>
-        <div class ="rightColumn">
+        <div class ="rightColumn hidden">
             <form class="col-xs-offset-1 col-xs-10">
                 <div class = "form-group">
                     <label class="studentUserName"> Student Id:<span></span></label>
                     <input type = "text" class = "form-control" id= "studentLoginId" placeholder= "Enter your Student ID" />
-                </div>
-                <div class = "form-group">
-                    <label class="studentPassword">Password:<span></span></label>
-                    <input type = "password" class = "form-control" id= "studentPassword" placeholder= "Student Password" />
                 </div>
                 <div class = "form-group">
                         <label class="studentPassword">Email:<span></span></label>
@@ -213,7 +209,12 @@
                 <button type = "button" class = "btn btn-success" id="studentLogIn">Request Report Card</button>
             </form>
         </div>
-
+        <div class="studentLogo">
+            <img/>
+        </div>
+        <div class="teacherLogo">
+            <img/>
+        </div>
     </div>
 
 </div>
