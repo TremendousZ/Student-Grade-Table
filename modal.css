@@ -12,6 +12,9 @@
     width: 100%;
     z-index: 4;
 }
+#blackOut.whiteOut{
+    background-color: white;
+}
 
 .editModal{
     background-color: white;
@@ -96,7 +99,7 @@ cursor: pointer;
 .deleteCheck{
     width:40%;
 }
-.studentReportCard, .courseReport{
+.studentReportCard, .courseReport, .studentViewReportCard{
     height:45%;
     width:60%;
 }
@@ -255,3 +258,4 @@ cursor: pointer;
     left: 105%;
     width: 65%;
 }
+
