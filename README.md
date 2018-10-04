@@ -17,14 +17,15 @@ This grade table has a log in for both teachers and students. Teachers are able 
         - for the password enter 'cpp123'
 
 > - Student Log In
-        - enter one of the following into the user input, "jcarlisle", "rmartin", or "ftaylor"
-        - enter "studentpassword" into the student password input
+        - enter one of the following into the user input, "jcarlisle", "rmartin", or "ftaylor" and click the request report card button
 
 > - As a Teacher
         - add students, classes and grades
         - click on any course name to get a listing of all students and the average grade for the class.
-        - to contact a student click on their name to write an email message
-        
+            
 > - As a Student
         - view your current report card
-        - click the request email button to send a copy of your report to the email entered
+        
+** Coming Soon ** 
+
+- Students can request an email of the report card

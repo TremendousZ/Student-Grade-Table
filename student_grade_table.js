@@ -640,4 +640,9 @@ function enterStudentPortal(){
       $(".rightColumn").removeClass('visible').addClass("hidden");
       $('.studentLogo').removeClass('visible').addClass("hidden"); 
       studentReportCard(name);
+      studentView()
+}
+
+function studentView(){
+      $('#blackOut').addClass('whiteOut');
 }
