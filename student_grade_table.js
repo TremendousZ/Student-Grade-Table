@@ -481,7 +481,6 @@ function addEditedStudent(){
 }
 
 function showLogin(){
-      debugger;
       $("#login").addClass('show');
       $(".welcomeHeader").addClass("visible").removeClass("hidden-fade");
       
@@ -591,6 +590,7 @@ function studentPortal(){
       let header = $('.welcomeHeader');
       header.addClass('hidden-fade');
       $('.rightColumn').removeClass('hidden').addClass('visible');
+      $('.studentLogo').removeClass('hidden').addClass('visible');
       setTimeout(()=>{header.addClass('hidden')},1000);
       
 }
@@ -599,6 +599,7 @@ function teacherPortal(){
       let header = $('.welcomeHeader');
       header.addClass('hidden-fade');
       $('.leftColumn').removeClass("hidden").addClass('visible');
+      $('.teacherLogo').removeClass('hidden').addClass('visible');
       setTimeout(()=>{header.addClass('hidden')},1000);
 }
 
@@ -609,7 +610,8 @@ function enterTeacherPortal(){
       if(userTeacherIdInput === "rferguson" && userTeacherPassword === "cpp123"){
             $('#login').removeClass('show');
             $('.mainBody').addClass('visible'); 
-            $('.leftColumn').removeClass('visible').css('z-index',-1);  
+            $('.leftColumn').removeClass('visible').addClass("hidden");
+            $('.teacherLogo').removeClass('visible').addClass("hidden");  
       } else{
             let wrongPassword = $('<div>').text("Please Enter a Valid Log In Name and Password").css('color','red').addClass("passwordError");
             $('.leftColumn').append(wrongPassword);
@@ -634,7 +636,8 @@ function enterStudentPortal(){
             break;
             
       }
-      // $("#login").removeClass('show');
-      $(".rightColumn").removeClass('visible').css('z-index',-1); 
+      
+      $(".rightColumn").removeClass('visible').addClass("hidden");
+      $('.studentLogo').removeClass('visible').addClass("hidden"); 
       studentReportCard(name);
 }
