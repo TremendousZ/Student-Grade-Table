@@ -588,13 +588,18 @@ function courseReportCard(course){
 }
 
 function studentPortal(){
-      $('.welcomeHeader').addClass('hidden-fade');
-      $('.rightColumn').addClass('visible').css('z-index',1);
+      let header = $('.welcomeHeader');
+      header.addClass('hidden-fade');
+      $('.rightColumn').removeClass('hidden').addClass('visible');
+      setTimeout(()=>{header.addClass('hidden')},1000);
+      
 }
 
 function teacherPortal(){
-      $('.welcomeHeader').addClass('hidden-fade');
-      $('.leftColumn').addClass('visible').css('z-index',1);
+      let header = $('.welcomeHeader');
+      header.addClass('hidden-fade');
+      $('.leftColumn').removeClass("hidden").addClass('visible');
+      setTimeout(()=>{header.addClass('hidden')},1000);
 }
 
 function enterTeacherPortal(){
@@ -614,5 +619,22 @@ function enterTeacherPortal(){
 }
 
 function enterStudentPortal(){
-
+      let name;
+      let userEnteredStudentId = $('#studentLoginId').val();
+      let userStudentEmail = $('#studentEmail').val();
+      switch(userEnteredStudentId){
+            case "jcarlisle":
+            name = "John Carlisle";
+            break;
+            case "hmartin":
+            name = "Howard Martin";
+            break;
+            case "ftaylor":
+            name = "Fred Taylor";
+            break;
+            
+      }
+      // $("#login").removeClass('show');
+      $(".rightColumn").removeClass('visible').css('z-index',-1); 
+      studentReportCard(name);
 }
