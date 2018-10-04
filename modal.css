@@ -3,7 +3,6 @@
 }
 
 #blackOut{
-    
     background-color: rgba(0,0,0,.4);
     position: absolute;
     top:0;
@@ -38,7 +37,7 @@
     left:15%;
 }
 .editButton,.deleteButton:hover{
-cursor: pointer;
+    cursor: pointer;
 }
 
 .student-list-container{
@@ -123,12 +122,18 @@ cursor: pointer;
     padding: 5% 2%;
 }
 
-#closeModal{
+#closeModal,#closeModalRC,#studentLogOut, #logOut{
     position: absolute;
     top:1%;
     right:1%;
 }
-
+#logOut, #studentLogOut{
+    background-color: #01426E;
+    color:white;
+}
+#logOut:hover, #studentLogOut:hover, #userIsTeacher:hover, #userIsStudent:hover{
+    color:green;
+}
 .show{
     display: block;
 }
@@ -155,16 +160,17 @@ cursor: pointer;
     top:25%;
     left:55%;
 }
+
 .studentLogo{
     position: absolute;
     top:25%;
     left:10%;
-
 }
 
 .goodInput{
     display: inline-block;
 }
+
 .welcomeHeader {
     position: absolute;
     top:30%;
@@ -218,6 +224,9 @@ cursor: pointer;
     animation: fade-out 1s ease forwards;
 }  
 
+.hide{
+    display:none;
+}
 
 .rc-studentName, .rc-studentGradeAvg, .rc-gpa{
     display:inline-block;
@@ -228,27 +237,28 @@ cursor: pointer;
     display: inline-block;
     margin: 2% 7.3%;
 }
+
 #academicProbationWarning {
     margin: 0% 8%;
 }
 
 .class-list{
     width:72%;
-    
     margin-left:6.5%;
-   
 }
+
 .classListContainer{
     height:28vh;
     overflow: scroll;
 }
 
 #tableDataGoesHere > tr > td:nth-child(1):hover{
-cursor: pointer;
+    cursor: pointer;
 }
+
 #tableDataGoesHere > tr > td:nth-child(2):hover{
     cursor: pointer;
-    }
+}
 
 .error{
     border-color:red !important;

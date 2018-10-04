@@ -12,6 +12,7 @@ $(document).ready(initializeApp);
  */
 
 var student_array = [];
+let studentUser = false;
 /***********************
  * student_array - global array to hold student objects
  * @type {Array}
@@ -103,9 +104,6 @@ function populateReportCard(response){
       for(let index = 0; index< classList.length; index++){
             let studentReportCard = $('<tr>');
             let studentCourseDiv = $('<td>').text(classList[index].course_name);
-            // studentCourseDiv.on('click', ()=>{
-            //       courseReportCard(student_obj.course_name);
-            // }) 
             let studentGradeDiv = $('<td>').text(classList[index].grade).addClass('studentGrade');
             studentReportCard.append(studentCourseDiv, studentGradeDiv);
             $("#courseList").append( studentReportCard);
@@ -212,18 +210,6 @@ function handleCancelClick(){
  * @return undefined
  * @calls clearAddStudentFormInputs, updateStudentList
  */
-// function addStudent(){
-//       var student_obj = {
-//             name: $("#studentName").val(),
-//             course: $("#course").val(),
-//             grade: $('#studentGrade').val(),    
-//       };
-      
-//       student_array.push(student_obj);
-//       console.log(student_obj);
-//       clearAddStudentFormInputs();
-//       updateStudentList(student_array);
-// }
 
 function addStudentToServer(student_obj){
     
@@ -262,7 +248,6 @@ function clearAddStudentFormInputs(){
 }
 
 function editStudentFromServer (student_obj ) {
-      debugger;
       studentToEdit = {
             dataType: "json",
             url: "php_SGTserver/data.php",
@@ -432,7 +417,11 @@ function editStudent(student_obj){
       //$('#editStudentButton').on('click', closeModal);
 }
 
-function closeModal(event){
+function closeModal(){
+      
+      if(studentUser == true){
+            return;
+      }
       $('#blackOut').addClass('hidden').removeClass('visible');
       $('.editModal').removeClass('show');
       $('.deleteCheck').removeClass('show');
@@ -482,8 +471,11 @@ function addEditedStudent(){
 
 function showLogin(){
       $("#login").addClass('show');
-      $(".welcomeHeader").addClass("visible").removeClass("hidden-fade");
-      
+      $("#blackOut").removeClass("whiteOut");
+      $(".welcomeHeader").removeClass("hidden hidden-fade").addClass("visible");
+      $('#studentLogOut').addClass('hidden');
+      studentUser = false;
+      closeModal();
 }
 
 // Show modal to confirm if the listing should be deleted
@@ -506,8 +498,7 @@ function deleteStudentCheck(student_obj){
             closeModal();
             student_obj='';
       } )
-      $('#confirmDelete').on('click', ()=> {deleteStudentFromServer(student_obj); closeModal});
-      
+      $('#confirmDelete').on('click', ()=> {deleteStudentFromServer(student_obj); closeModal});   
 }
 
 // Show the report card, get the grade average, and get the GPA
@@ -515,6 +506,7 @@ function deleteStudentCheck(student_obj){
 function studentReportCard(name){
       $('#blackOut').removeClass('hidden').addClass('visible');
       $('.studentReportCard').addClass('show');
+      $('#closeModalRC').removeClass('hidden');
       $('.rc-studentName span').text(`${name}`);   
       getStudentCourseList(name);  
 }
@@ -607,23 +599,22 @@ function enterTeacherPortal(){
       let userTeacherIdInput = $('#teacherLoginInfo').val();
       let userTeacherPassword = $('#teacherPassword').val();
 
-      // if(userTeacherIdInput === "rferguson" && userTeacherPassword === "cpp123"){
+      if(userTeacherIdInput === "rferguson" && userTeacherPassword === "cpp123"){
             $('#login').removeClass('show');
             $('.mainBody').addClass('visible'); 
             $('.leftColumn').removeClass('visible').addClass("hidden");
             $('.teacherLogo').removeClass('visible').addClass("hidden");  
-      // } else{
-            // let wrongPassword = $('<div>').text("Please Enter a Valid Log In Name and Password").css('color','red').addClass("passwordError");
-            // $('.leftColumn').append(wrongPassword);
-            // return;
-      // }
+      } else{
+            let wrongPassword = $('<div>').text("Please Enter a Valid Log In Name and Password").css('color','red').addClass("passwordError");
+            $('.leftColumn').append(wrongPassword);
+            return;
+      }
       
 }
 
 function enterStudentPortal(){
       let name;
       let userEnteredStudentId = $('#studentLoginId').val();
-      let userStudentEmail = $('#studentEmail').val();
       switch(userEnteredStudentId){
             case "jcarlisle":
             name = "John Carlisle";
@@ -645,4 +636,7 @@ function enterStudentPortal(){
 
 function studentView(){
       $('#blackOut').addClass('whiteOut');
+      $('#studentLogOut').removeClass('hidden').on('click',()=>{showLogin()});
+      $('#closeModalRC').addClass('hidden');
+      studentUser = true;
 }
