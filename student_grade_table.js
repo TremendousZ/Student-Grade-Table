@@ -127,7 +127,6 @@ function getCourseReport(courseName){
 }
 
 function populateCourseReportCard(response){
-      console.log("this response", response);
       let dataObject = JSON.parse(response);
       let studentList = dataObject.data;
       for(let index = 0; index< studentList.length; index++){
@@ -260,7 +259,6 @@ function editStudentFromServer (student_obj ) {
                   id: student_obj.id,
              },
             success: function(response) {
-                  console.log("This response",response);
                   getStudentData();
             },
             error: function(response){
@@ -439,8 +437,6 @@ function closeModal(){
 }
 
 function addEditedStudent(){
-      debugger;
-      console.log($("#editStudentName"));
       event.preventDefault();
       let newStudentName = $("#editStudentName").val();
       if(newStudentName === ""){
@@ -599,14 +595,21 @@ function enterTeacherPortal(){
       let userTeacherIdInput = $('#teacherLoginInfo').val();
       let userTeacherPassword = $('#teacherPassword').val();
 
-      if(userTeacherIdInput === "rferguson" && userTeacherPassword === "cpp123"){
-            $('#login').removeClass('show');
-            $('.mainBody').addClass('visible'); 
-            $('.leftColumn').removeClass('visible').addClass("hidden");
-            $('.teacherLogo').removeClass('visible').addClass("hidden");  
+      if(userTeacherIdInput === "rferguson"){
+            if(userTeacherPassword==="cpp123"){
+                  $('#login').removeClass('show');
+                  $('.mainBody').addClass('visible'); 
+                  $('.leftColumn').removeClass('visible').addClass("hidden");
+                  $('.teacherLogo').removeClass('visible').addClass("hidden"); 
+                  $('.teacherPassword span').text("");
+
+            }else{
+                  $('.teacherUserName span').text("");
+                  $('.teacherPassword span').text(" Please Enter a Valid Password").css('color','red');      
+            }
+             
       } else{
-            let wrongPassword = $('<div>').text("Please Enter a Valid Log In Name and Password").css('color','red').addClass("passwordError");
-            $('.leftColumn').append(wrongPassword);
+            $('.teacherUserName span').text(" Please Enter a Valid Teacher Login ID").css('color','red');
             return;
       }
       
@@ -625,9 +628,11 @@ function enterStudentPortal(){
             case "ftaylor":
             name = "Fred Taylor";
             break;
-            
+            default:
+            $('.studentUserName span').text(" Please enter a valid student ID").css('color','red');
+            return;     
       }
-      
+      $('.studentUserName span').text("");
       $(".rightColumn").removeClass('visible').addClass("hidden");
       $('.studentLogo').removeClass('visible').addClass("hidden"); 
       studentReportCard(name);
@@ -639,4 +644,10 @@ function studentView(){
       $('#studentLogOut').removeClass('hidden').on('click',()=>{showLogin()});
       $('#closeModalRC').addClass('hidden');
       studentUser = true;
+}
+
+function clearInputs(){
+      $('#teacherLoginInfo').val("");
+      $('#teacherPassword').val("");
+      $('#studentLoginId').val("");
 }

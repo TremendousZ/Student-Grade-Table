@@ -140,7 +140,7 @@
 
 .rightColumn, .leftColumn{
     box-sizing: border-box;
-    width:49%;
+    width:45%;
     position: absolute;
     top:25%;
     opacity: 0;
