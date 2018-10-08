@@ -267,5 +267,29 @@
 }
 
 @media only screen and (max-width: 600px) {
-    
+    .welcomeHeader {
+        width:80%;
+        text-align: center;
+    }
+
+    .leftColumn,.rightColumn{
+        width:80%;
+    }
+    .rightColumn{
+        left:0;
+    }
+    .teacherLogo,.studentLogo {
+        display: none;
+    }
+
+    .student-list-container{
+        height:45vh;
+    }
+
+    .teacherWelcome{
+        margin-left:3%
+    }
+    .header img{
+        width: 40%
+    }
 }
