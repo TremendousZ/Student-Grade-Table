@@ -28,13 +28,12 @@
     text-align: center;
 }
 
-.editButton{
-    margin-right: 5%;
-}
+
 .editButton,.deleteButton{
     color:#01426E;
     position:relative;
     left:15%;
+    margin-right:18%;
 }
 .editButton,.deleteButton:hover{
     cursor: pointer;
@@ -291,5 +290,12 @@
     }
     .header img{
         width: 40%
+    }
+
+    .studentReportCard,.courseReport,.deleteCheck{
+        width:95%;
+    }
+    .editModal{
+        width:100%;
     }
 }
