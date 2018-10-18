@@ -80,7 +80,7 @@
 #studentIdNumber {
     display: none;
 }
-.deleteCheck,.studentReportCard, .courseReport{
+.deleteCheck,.studentReportCard, .courseReport, .editModal{
     position: absolute;
     background-color: white;
     top: 50%;
@@ -261,6 +261,14 @@
     width: 65%;
 }
 
+.gradeAverage{
+    display: block;
+}
+
+.teacherWelcome{
+    margin-left:5%;
+}
+
 @media only screen and (max-width: 600px) {
     .welcomeHeader {
         width:80%;
@@ -268,7 +276,7 @@
     }
 
     .leftColumn,.rightColumn{
-        width:80%;
+        width:95%;
     }
     .rightColumn{
         left:0;
@@ -277,21 +285,22 @@
         display: none;
     }
 
+    #studentLogIn{
+        margin-top: 5%;
+    }
+
     .student-list-container{
         height:45vh;
     }
 
     .teacherWelcome{
-        margin-left:3%
+        margin-left:5%
     }
     .header img{
         width: 40%
     }
 
-    .studentReportCard,.courseReport,.deleteCheck{
+    .studentReportCard,.courseReport,.deleteCheck, .editModal{
         width:95%;
-    }
-    .editModal{
-        width:100%;
     }
 }
