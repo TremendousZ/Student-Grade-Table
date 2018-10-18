@@ -8,6 +8,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="student_grade_table.js"></script>
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
+    <title>Student Grade Table</title>
 </head>
 <body>
 <div class="container mainBody">
@@ -55,7 +56,7 @@
 
         <button type="submit" class="btn btn-success add">Add</button>
         <button type="button" class="btn btn-default cancel">Cancel</button>
-        <button type="button" class="btn btn-default getData">Get data From Server</button>
+        <button type="button" class="btn btn-default getData">Refresh</button>
         <div class="errorMessage red-text">
         </div>
     </div>
@@ -188,7 +189,7 @@
                     <label class="teacherPassword">Password:<span></span></label>
                     <input type = "password" class = "form-control" id= "teacherPassword" placeholder= "Login Password" />
                 </div>
-                
+                <button class="btn reset" >Start Over</button>
                 <button type = "button" class = "btn btn-danger clearInputs" onclick="clearInputs()">Clear</button>
                 <button type = "button" class = "btn btn-success" id="teacherLogIn">Login</button>
             </form>
@@ -203,7 +204,7 @@
                         <label class="studentPassword">Email:<span></span></label>
                         <input type = "email" disabled class = "form-control" id= "studentEmail" placeholder= "Please enter your email" />
                 </div>
-                
+                <button class="btn reset">Start Over</button>
                 <button type = "button" class = "btn btn-danger clearInputs" onclick="clearInputs()">Clear</button>
                 <button type = "button" class = "btn btn-success" id="studentLogIn">Request Report Card</button>
             </form>

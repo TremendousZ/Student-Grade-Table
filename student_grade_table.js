@@ -66,6 +66,7 @@ function addClickHandlersToElements(){
       $('#teacherLogIn').on('click',enterTeacherPortal);
       $('#studentLogIn').on('click',enterStudentPortal);
       $('#logOut').on('click',showLogin);
+      $('.reset').on('click',reset);
 }
 
 function getStudentData(){
@@ -494,7 +495,10 @@ function deleteStudentCheck(student_obj){
             closeModal();
             student_obj='';
       } )
-      $('#confirmDelete').on('click', ()=> {deleteStudentFromServer(student_obj); closeModal});   
+      $('#confirmDelete').on('click', ()=> {
+            deleteStudentFromServer(student_obj);
+            closeModal();
+      })   
 }
 
 // Show the report card, get the grade average, and get the GPA
@@ -579,8 +583,7 @@ function studentPortal(){
       header.addClass('hidden-fade');
       $('.rightColumn').removeClass('hidden').addClass('visible');
       $('.studentLogo').removeClass('hidden').addClass('visible');
-      setTimeout(()=>{header.addClass('hidden')},1000);
-      
+      setTimeout(()=>{header.addClass('hidden')},1000);     
 }
 
 function teacherPortal(){
@@ -589,6 +592,15 @@ function teacherPortal(){
       $('.leftColumn').removeClass("hidden").addClass('visible');
       $('.teacherLogo').removeClass('hidden').addClass('visible');
       setTimeout(()=>{header.addClass('hidden')},1000);
+}
+
+function reset(){
+      let header = $('.welcomeHeader');
+      header.removeClass('hidden-fade');
+      $('.rightColumn').addClass('hidden').removeClass('visible');
+      $('.studentLogo').addClass('hidden').removeClass('visible');
+      setTimeout(()=>{header.removeClass('hidden')},1000);  
+
 }
 
 function enterTeacherPortal(){
