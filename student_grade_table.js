@@ -599,6 +599,8 @@ function reset(){
       header.removeClass('hidden-fade');
       $('.rightColumn').addClass('hidden').removeClass('visible');
       $('.studentLogo').addClass('hidden').removeClass('visible');
+      $('.leftColumn').addClass("hidden").removeClass('visible');
+      $('.teacherLogo').addClass('hidden').removeClass('visible');
       setTimeout(()=>{header.removeClass('hidden')},1000);  
 
 }
@@ -607,7 +609,7 @@ function enterTeacherPortal(){
       let userTeacherIdInput = $('#teacherLoginInfo').val();
       let userTeacherPassword = $('#teacherPassword').val();
 
-      if(userTeacherIdInput === "rferguson"){
+      if(userTeacherIdInput === "bsmith"){
             if(userTeacherPassword==="cpp123"){
                   $('#login').removeClass('show');
                   $('.mainBody').addClass('visible'); 
