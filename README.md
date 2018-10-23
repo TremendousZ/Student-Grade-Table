@@ -13,13 +13,13 @@ This grade table has a log in for both teachers and students. Teachers are able 
         - navigate to the folder containing the SGT
 
 > - Teacher Log In
-        - enter 'rferguson' into the login
+        - enter 'bsmith' into the login
         - for the password enter 'cpp123'
 
 > - Student Log In
-        - enter one of the following into the user input, "jcarlisle", "rmartin", or "ftaylor" and click the request report card button
+        - enter one of the following into the user input, "jcarlisle", "hmartin", or "ftaylor" and click the request report card button
 
-> - As a Teacher
+> - As a Teacher 
         - add students, classes and grades
         - click on any course name to get a listing of all students and the average grade for the class.
             
