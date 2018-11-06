@@ -566,7 +566,6 @@ function checkGradeInput(){
 }
 
 function clearInputs(){
-      debugger;
       $('#editStudentName').val('').css('background-color', 'white').removeClass('error');
       $('#editStudentCourse').val('').css('background-color', 'white').removeClass('error');
       $('#editStudentGrade').val('').css('background-color', 'white').removeClass('error');
