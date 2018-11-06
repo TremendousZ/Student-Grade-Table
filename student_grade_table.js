@@ -410,6 +410,12 @@ function editStudent(student_obj){
       $("#blackOut").removeClass('hidden').addClass('visible');
       $(".editModal").addClass('show');
       $('.currentStudentName span').text(student_obj.name);
+      $("#editStudentName").val("").css('background-color', 'white');
+      $("#editStudentCourse").val("").css('background-color', 'white');
+      $("#editStudentGrade").val("").css('background-color', 'white');
+      $('.goodEditName').empty();
+      $('.goodEditCourse').empty();
+      $('.goodEditGrade').empty();
       $('.currentStudentCourse span').text(student_obj.course_name);
       $('.currentStudentGrade span').text(student_obj.grade);
       $('#studentIdNumber').text(student_obj.id);
@@ -560,6 +566,7 @@ function checkGradeInput(){
 }
 
 function clearInputs(){
+      debugger;
       $('#editStudentName').val('').css('background-color', 'white').removeClass('error');
       $('#editStudentCourse').val('').css('background-color', 'white').removeClass('error');
       $('#editStudentGrade').val('').css('background-color', 'white').removeClass('error');
